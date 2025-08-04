@@ -1,0 +1,85 @@
+@use "../../css/base";
+
+.container {
+  @include base.container($bg-c: hsla(0, 0%, 0%, 0));
+
+  fieldset {
+    display: flex;
+    flex-flow: row wrap;
+    border: none;
+  }
+
+  button {
+    padding: 0.25rem;
+    margin-left: auto;
+
+    &.delete-btn {
+      display: inline-flex;
+      border: none;
+      padding: 0;
+      margin-left: 0;
+    }
+  }
+
+  custom-input {
+    flex: 1 100%;
+  }
+
+  label {
+    width: 8rem;
+  }
+
+  pimage {
+    display: flex;
+    flex: 1 100%;
+
+    .img_block {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .img_add_block {
+      height: 100%;
+      width: 100%;
+      opacity: 0.6;
+      background: hsla(348, 63%, 47%);
+      position: absolute;
+      border-radius: 0.25rem;
+      visibility: hidden;
+      // transition: visibility 0.1s linear;
+    }
+
+    loading-block {
+      position: absolute;
+      visibility: hidden;
+    }
+
+    img {
+      height: 100px;
+      border-radius: 0.25rem;
+    }
+
+    .visible {
+      visibility: visible;
+    }
+  }
+
+  .view {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 0.5rem;
+  }
+
+  .fa-image {
+    height: 20px;
+    width: 20px;
+  }
+
+  .fa-plus {
+    height: 100%;
+    width: 100%;
+    color: hsla(0, 0%, 100%, 1);
+  }
+}

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" height="300px" width="300px" version="1.1" viewBox="-300 -300 600 600" font-family="Bitstream Vera Sans,Liberation Sans, Arial, sans-serif" font-size="72" text-anchor="middle">
+  <circle stroke="#AAA" stroke-width="10" r="280" fill="#FFF"/>
+  <switch style="fill:#444;">
+    <text id="trsvg3-bn" systemLanguage="bn"><tspan x="0" y="-8" id="trsvg1-bn">ছবি উপলভ্য</tspan><tspan x="0" y="80" id="trsvg2-bn">নয়</tspan></text>
+    <text id="trsvg3-de" systemLanguage="de"><tspan x="0" y="-8" id="trsvg1-de">KEIN BILD</tspan><tspan x="0" y="80" id="trsvg2-de">VERFÜGBAR</tspan></text>
+    <text id="trsvg3-en" systemLanguage="en"><tspan x="0" y="-8" id="trsvg1-en">NO IMAGE</tspan><tspan x="0" y="80" id="trsvg2-en">AVAILABLE</tspan></text>
+	<text id="trsvg3-es" systemLanguage="es"><tspan x="0" y="-8" id="trsvg1-es">IMAGEN NO</tspan><tspan x="0" y="80" id="trsvg2-es">DISPONIBLE</tspan></text>
+	<text id="trsvg3-id" systemLanguage="id"><tspan x="0" y="-8" id="trsvg1-id">GAMBAR TAK</tspan><tspan x="0" y="80" id="trsvg2-id">TERSEDIA</tspan></text>
+	<text id="trsvg3-ko" systemLanguage="ko"><tspan x="0" y="-8" id="trsvg1-ko">이미지가</tspan><tspan x="0" y="80" id="trsvg2-ko">없습니다</tspan></text>
+	<text id="trsvg3-ro" systemLanguage="ro"><tspan x="0" y="-8" id="trsvg1-ro">IMAGINE</tspan><tspan x="0" y="80" id="trsvg2-ro">INDISPONIBILĂ</tspan></text>
+	<text id="trsvg3-tr" systemLanguage="tr"><tspan x="0" y="-8" id="trsvg1-tr">GÖRÜNTÜ</tspan><tspan x="0" y="80" id="trsvg2-tr">YOK</tspan></text>
+	<text id="trsvg3-vi" systemLanguage="vi"><tspan x="0" y="-8" id="trsvg1-vi">KHÔNG</tspan><tspan x="0" y="80" id="trsvg2-vi">CÓ ẢNH</tspan></text>
+	<text id="trsvg3-ba" systemLanguage="ba"><tspan x="0" y="-8" id="trsvg1-ba">ҺҮРӘТТӘР</tspan><tspan x="0" y="80" id="trsvg2-ba">ЮҠ</tspan></text><text id="trsvg3-ang" systemLanguage="ang"><tspan x="0" y="-8" id="trsvg1-ang">NĀ BILDE</tspan><tspan x="0" y="80" id="trsvg2-ang">ĀFĒR</tspan></text><text id="trsvg3-fr" systemLanguage="fr"><tspan x="0" y="-8" id="trsvg1-fr">AUCUNE IMAGE</tspan><tspan x="0" y="80" id="trsvg2-fr">DISPONIBLE</tspan></text><text id="trsvg3-bjn" systemLanguage="bjn"><tspan x="0" y="-8" id="trsvg1-bjn">GAMBAR KADA</tspan><tspan x="0" y="80" id="trsvg2-bjn">TERSEDIA</tspan></text><text id="trsvg3"><tspan x="0" y="-8" id="trsvg1">NO IMAGE</tspan><tspan x="0" y="80" id="trsvg2">AVAILABLE</tspan></text></switch>
+</svg>

@@ -1,0 +1,58 @@
+import DOMPurify from "dompurify";
+import {
+  getRegisteredCustomElements,
+  registerCustomElement,
+} from "../../../js/registerComponent.js";
+import styles from "./resume_classic.shadow.scss";
+
+export default class ResumeClassic extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+  }
+
+  render() {
+    const styleToImport = "data-style=classic";
+    const dom = `
+      <div class="container">
+        <div class="info">
+          <user-details ${styleToImport}></user-details>
+        </div>
+        <div class="cap">
+          <user-skills ${styleToImport}></user-skills>
+          <user-educations ${styleToImport}></user-educations>
+        </div>
+        <div class="exp">
+          <user-experiences ${styleToImport}></user-experiences>
+        </div>
+      </div>
+    `;
+
+    const registeredComponents = getRegisteredCustomElements();
+
+    DOMPurify.addHook("uponSanitizeElement", (_, data) => {
+      if (registeredComponents.includes(data.tagName) !== -1) {
+        data.allowedTags[data.tagName] = true;
+      }
+    });
+
+    this.shadowRoot.innerHTML = DOMPurify.sanitize(dom);
+  }
+
+  styling() {
+    const sheet = new CSSStyleSheet();
+    // sheet.replaceSync(styles);
+    //const cssModule = import('./details.shadow.scss');
+    sheet.replaceSync(styles.toString());
+    // styles.use({ target: this.shadowRoot });
+    this.shadowRoot.adoptedStyleSheets = [sheet];
+  }
+
+  connectedCallback() {
+    this.render();
+    this.styling();
+  }
+}
+
+//customElements.define('resume-home', Home);
+registerCustomElement("resume-classic", ResumeClassic);

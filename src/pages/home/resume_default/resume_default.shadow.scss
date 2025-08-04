@@ -1,0 +1,102 @@
+@use "../../../css/base";
+
+:host {
+  display: block;
+}
+
+.container {
+  @include base.container($bg-c: hsla(0, 0%, 0%, 0));
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "info info skills"
+    "info info edu"
+    "exp exp exp";
+  gap: 0.5rem;
+
+  &.edu-multi-line {
+    grid-template-areas:
+      "info info skills"
+      "info info skills"
+      "edu edu edu"
+      "exp exp exp";
+
+    .edu {
+      border-top: 1px solid hsla(0, 0%, 0%, 0.2);
+    }
+
+    &.all-fullWidth {
+      grid-template-areas:
+        "info"
+        "skills"
+        "edu"
+        "exp";
+
+      .skills {
+        border-top: 1px solid hsla(0, 0%, 0%, 0.2);
+      }
+    }
+  }
+
+  > .info {
+    grid-area: info;
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1 auto;
+    align-items: flex-end;
+    gap: 0.25rem;
+
+    &.fullWidth {
+      border-bottom: 1px solid hsla(0, 0%, 0%, 0.2);
+    }
+  }
+
+  > .skills {
+    grid-area: skills;
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1 auto;
+    gap: 0.25rem;
+    text-transform: uppercase;
+  }
+
+  > .edu {
+    grid-area: edu;
+    flex: 1 auto;
+
+    &.fullWidth {
+      border-top: 1px solid hsla(0, 0%, 0%, 0.2);
+    }
+  }
+
+  > .exp {
+    grid-area: exp;
+    flex: 1 100%;
+  }
+
+  user-details {
+    height: 100%;
+  }
+
+  dialog-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+  }
+
+  @media screen and (max-width: 800px) {
+    display: flex;
+    flex-flow: row wrap;
+  }
+
+  @media print {
+    > .info {
+      &.fullWidth {
+        border-bottom: none;
+      }
+    }
+  }
+}

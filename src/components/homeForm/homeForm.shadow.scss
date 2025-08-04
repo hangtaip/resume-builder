@@ -1,0 +1,11 @@
+@use "../../css/base";
+
+.container {
+  @include base.container($bg-c: hsla(0, 0%, 0%, 0));
+
+  form {
+    display: flex;
+    flex-flow: column wrap;
+    gap: 0.5rem;
+  }
+}

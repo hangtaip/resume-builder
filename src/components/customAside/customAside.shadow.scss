@@ -1,0 +1,328 @@
+@use "../../css/base";
+
+$base-margin: 1rem;
+$base-padding: 1rem;
+$transition-properties: visibility 1s linear;
+
+.container {
+  @include base.container($h: 100%, $w: fit-content, $bg-c: hsla(0, 0%, 0%, 0));
+  min-height: 100vh;
+  max-height: 100vh;
+  position: sticky;
+  top: 0;
+  margin-top: calc(base.$navbar-height * -1);
+  // display: none;
+  visibility: hidden;
+  height: 0;
+  width: 0;
+  // transition-property: visibility;
+  transition: visibility 0.1s ease-in;
+
+  &.sidebar-visible {
+    // display: block;
+    visibility: visible;
+    z-index: base.$z-index;
+    position: fixed;
+    left: 0;
+    margin-top: 0;
+    width: auto;
+
+    .template-list-item {
+      height: initial;
+    }
+
+    aside {
+      // width: 70vw;
+    }
+
+    button {
+      width: 100%;
+
+      &.close-btn {
+        display: inline-flex;
+      }
+    }
+  }
+
+  aside {
+    anchor-name: --asideAnchor;
+    position: relative;
+    display: flex;
+    flex-flow: column wrap;
+    gap: 0.5rem;
+    top: 0;
+    height: 100%;
+    width: fit-content;
+    background-color: lightgray;
+    padding: base.$navbar-height 0.5rem 0.5rem 0.5rem;
+  }
+
+  aside-top {
+    height: base.$navbar-height;
+    width: 100%;
+    width: -webkit-fill-available;
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+
+    .aside_app_title {
+      font-size: calc(3ch * 0.75);
+      font-weight: bold;
+    }
+
+    .close-btn {
+      display: none;
+      margin-left: auto;
+    }
+  }
+
+  btn-group {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 0.5rem;
+  }
+
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition-property: color;
+
+    .hoverShow {
+      opacity: 0;
+    }
+
+    &.selected {
+      .aside-item-icon {
+        color: green;
+      }
+    }
+
+    &.upload-btn,
+    &.export-btn {
+      background: unset;
+
+      &:active {
+        transform: scale(0.9);
+        filter: drop-shadow(4px 4px 4px hsl(270, 50%, 40%, 1));
+        transition: all 0.1s ease-in;
+      }
+    }
+
+    &.close-btn {
+      height: 10px;
+      width: auto;
+      background: unset;
+      align-items: center;
+      border: none;
+      padding: 0;
+      margin-top: 5px;
+    }
+
+    &.template-item {
+      gap: 0.5rem;
+      justify-content: flex-start;
+      &:not(:last-child) {
+        margin-bottom: 0.25rem;
+      }
+    }
+  }
+
+  button:hover {
+    &:not(.selected) .hoverShow {
+      opacity: 1;
+    }
+    &:not(.selected) .hoverHide {
+      opacity: 0;
+    }
+    &.selected:not(.template-item-btn) {
+      cursor: default;
+      border-radius: 0.25rem;
+      background-color: hsl(0, 0%, 100%);
+    }
+  }
+
+  .aside-item-icon {
+    position: absolute;
+    transition:
+      color base.$transition-time ease-out,
+      opacity base.$transition-time ease-out;
+  }
+
+  .options-group {
+    display: flex;
+    flex-flow: column;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    transition: all base.$transition-time ease-in;
+  }
+
+  .template-item-icon {
+    position: absolute;
+    display: flex;
+  }
+
+  .template-list {
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    gap: 0.5rem;
+
+    .template-list-text {
+      flex: 1 100%;
+    }
+
+    .template-list-item {
+      overflow: auto;
+      scrollbar-width: none;
+      scroll-behavior: smooth;
+      max-height: 20vh;
+      display: grid;
+      grid-auto-flow: row;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      flex: 1 auto;
+
+      button {
+        border: 0.15rem solid hsl(0, 100%, 100%);
+        border-radius: 0.25rem;
+        flex: 1 auto;
+        padding: 0.25rem;
+        padding-inline: 0;
+        transition: all 0.1s ease-in;
+
+        &:active {
+          border-radius: 0.25rem;
+          // filter: drop-shadow(4px 4px 4px hsl(270, 50%, 40%, 1));
+          border: 0.15rem solid hsl(120, 80%, 50%);
+        }
+        &.selected {
+          border: 0.15rem solid hsl(217, 80%, 50%);
+        }
+      }
+
+      .template-list-button {
+        display: flex;
+        flex: 1 auto;
+        anchor-name: var(--tooltip-anchor-name);
+      }
+    }
+
+    .template-list-buttons {
+      anchor-name: --tlbAnchor;
+    }
+  }
+
+  [popover="hint"] {
+    inset: unset;
+    line-height: 0;
+    // position: absolute;
+    top: calc(anchor(var(--tooltip-anchor-name) bottom) + 10px);
+    left: calc(anchor(--asideAnchor left) + 1rem);
+    margin: 0;
+
+    padding: 0;
+    border-radius: 6px;
+    // background: #271717;
+    color: whitesmoke;
+    box-shadow: 1px 1px 3px #999;
+    height: auto;
+    width: calc(anchor-size(--asideAnchor width) - 2rem);
+
+    .tooltip-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    loading-block {
+      position: absolute;
+      visibility: hidden;
+
+      &.visible {
+        visibility: visible;
+      }
+    }
+
+    img {
+      // height: 100%;
+      min-height: 100px;
+      width: 100%;
+    }
+  }
+
+  button .btn-inner::before,
+  button:not(.close-btn, .template-item-btn)::before {
+    content: "";
+    width: 1rem;
+    height: 1rem;
+    overflow: hidden;
+    visibility: hidden;
+  }
+
+  .btn-inner {
+    display: flex;
+  }
+
+  .aside-item-text {
+    display: inline-block;
+    position: relative;
+    // transition: all base.$transition-time ease-out;
+
+    > .textbox {
+      position: absolute;
+      right: 0;
+    }
+  }
+
+  .template-list-item {
+    height: 0;
+  }
+
+  .aside-item-text::before {
+    content: attr(data-text);
+    font-weight: bold;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+  }
+
+  .transparent,
+  .transparent * {
+    visibility: hidden;
+    height: 0;
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+  svg {
+    height: base.$svg-height-base;
+    width: base.$svg-width-base;
+    vertical-align: middle;
+  }
+
+  .icon:not(.fa-xMark) {
+    height: base.$fa-icon-height-base;
+    width: base.$fa-icon-width-base;
+    vertical-align: middle;
+  }
+
+  @media screen and (min-width: 800px) {
+    // display: block;
+    visibility: visible;
+    opacity: 1;
+    width: auto;
+
+    .template-list-item {
+      height: initial;
+    }
+
+    aside-top {
+      justify-content: center;
+    }
+  }
+}

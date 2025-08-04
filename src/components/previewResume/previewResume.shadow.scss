@@ -1,0 +1,36 @@
+@use "../../css/base";
+
+.container {
+  @include base.container($bg-c: hsla(0, 0%, 0%, 0));
+  dialog {
+    height: 80%;
+    width: 80%;
+    border-radius: 0.25rem;
+
+    &.visibility-none {
+      visibility: hidden;
+    }
+  }
+
+  button {
+    padding: 0;
+    padding-inline: 0;
+    border-width: 0;
+    display: flex;
+    margin-left: auto;
+  }
+
+  print-btn {
+    display: block;
+    width: fit-content;
+    position: sticky;
+    bottom: 5px;
+    margin-left: auto;
+  }
+
+  .fa-x-mark {
+    height: 1rem;
+    width: 1rem;
+    color: hsl(8, 100%, 59%, 1);
+  }
+}

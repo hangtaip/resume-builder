@@ -1,0 +1,84 @@
+@use "../../css/base";
+
+:host {
+  position: sticky;
+  top: 0;
+  z-index: base.$z-index;
+}
+
+.container {
+  @include base.container($bg-c: hsla(0, 0%, 0%, 0));
+  background-color: hsl(240, 25%, 94%);
+  display: block;
+
+  nav {
+    display: flex;
+    align-items: center;
+    padding: 0.7rem;
+  }
+
+  .navbar {
+    height: base.$navbar-height;
+
+    &.navbar_sidebar_show .navbar_backdrop {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  .navbar_inner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .navbar_backdrop {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    background-color: hsl(0, 0%, 40%, 0.7);
+    transition-property: opacity, visibility;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+  }
+
+  .app_title {
+    font-size: 3ch;
+    font-weight: bold;
+  }
+
+  .fixedTop {
+    position: sticky;
+    top: 0;
+  }
+
+  button {
+    height: 10px;
+    background: none;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+    }
+  }
+
+  svg {
+    height: base.$svg-height-base;
+    width: base.$svg-width-base;
+    vertical-align: middle;
+  }
+
+  .icon {
+    height: calc(base.$fa-icon-height-base * 2);
+    width: calc(base.$fa-icon-width-base * 2);
+    vertical-align: middle;
+  }
+
+  @media screen and (min-width: 800px) {
+    display: none;
+  }
+}

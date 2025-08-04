@@ -1,0 +1,77 @@
+@use "../../css/base";
+
+.container {
+  @include base.container($h: 100%, $w: 100%, $bg-c: hsla(0, 0%, 0%, 0));
+  overflow: auto;
+  display: flex;
+  flex-flow: column nowrap;
+
+  .mainWrapper {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+
+    .docWrapper {
+      display: flex;
+      flex: 1 0 auto;
+
+      .docRoot {
+        display: flex;
+        width: 100%;
+      }
+    }
+  }
+
+  main {
+    // background: blue;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    scrollbar-width: thin;
+    display: flex;
+    flex-flow: column;
+    flex: 1;
+
+    .formRoot {
+      display: flex;
+      flex-flow: column;
+      flex: 1 auto;
+    }
+
+    .view {
+      transition: all base.$transition-time ease-in;
+      flex: 1 100%;
+
+      &:has(.removing) {
+        opacity: 0;
+      }
+    }
+
+    home-form {
+      transition: all base.$transition-time linear;
+    }
+
+    .main-bottom {
+      height: 5rem;
+      flex: 1 auto;
+    }
+
+    .transparent {
+      opacity: 0;
+    }
+  }
+
+  .removing {
+    display: block;
+    height: 0;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+menu-btn {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+}
