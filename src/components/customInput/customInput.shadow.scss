@@ -1,0 +1,38 @@
+@use "../../css/base";
+
+.container {
+  @include base.container($bg-c: hsla(0, 0%, 0%, 0));
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+  gap: 0.25rem;
+
+  input {
+    // max-width: attr(data-width rem);
+    flex: 3 100%;
+    padding: 0.25rem;
+    border: 1px solid hsla(240, 54%, 94%, 1);
+    border-radius: 0.25rem;
+
+    &[type="color"] {
+      max-width: attr(data-width rem);
+    }
+  }
+
+  .form-group {
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1;
+    gap: 0.25rem;
+  }
+
+  .form-group-item {
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1;
+
+    &.flex-0 {
+      flex: 0;
+    }
+  }
+}

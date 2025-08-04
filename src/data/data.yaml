@@ -1,0 +1,69 @@
+---
+title: details
+owner:
+  name: 
+  title: 
+  email: 
+  github: 
+  yob: 
+  tel: 
+  country_code: 
+  location: 
+  seek:  
+  motto: |-
+    
+  edu: 
+    1:
+      field: i flied 
+      alma: i almo
+    2:
+      field: test
+      alma:  iaei
+  skills:
+    1:
+      name: HTML5 
+      color: E34F26
+    2:
+      name: CSS 
+      color: 663399
+    3:
+      name: Javascript 
+      color: F7DF1E
+    4:
+      name: CSharp 
+      color: A179DC
+      icon: '/assets/imgs/icons/csharp.svg' 
+    5:
+      name: Python 
+      color: 3776AB
+  exp:
+    1:
+      org: comp1 
+      pos: Software Engineer
+      tl_from: 2017-04
+      tl_to: 2022-12
+      desc:
+        - learned basic of programming
+        - introduced to .net ,c# and db driven development
+        - using materialize and jquery in frontend
+    2:
+      org: comp2
+      pos: SoftWare Engineer
+      tl_from: 2023-09
+      tl_to: 2023-12
+      desc:
+        - 1 month of basic python class
+        - soft skill class and team building meeting 
+        - 2 months of internship to grasp back into industry
+        - training
+    3:
+      org:      
+      pos: Software Engineer
+      tl_from: 2023-10
+      tl_to: 2024-10
+      desc:
+        - learned visual basic
+        - using bootstrap, jquery and multiple library in frontend
+        - implemented db driven development
+        - introduced exceljs
+        - redesign UI for settings page

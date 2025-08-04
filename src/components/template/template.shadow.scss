@@ -1,0 +1,5 @@
+@use "../../css/base";
+
+.container {
+  @include base.container($bg-c: hsla(0, 0%, 0%, 0));
+}

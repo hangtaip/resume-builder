@@ -1,0 +1,238 @@
+export default class ShadowParser {
+  constructor() {
+    this.fragment = document.createDocumentFragment();
+    this.container = this.fragment.appendChild(
+      document.createDocumentFragment(),
+    );
+    this.styles = new CSSStyleSheet();
+    this.count = 0;
+  }
+
+  async parseDOM(element) {
+    const processShadowRoot = async (host, outputFragment, depth = 0) => {
+      this.count++;
+      // if (!host.shadowRoot) return;
+
+      console.log(host)
+      const shadowClone = await this.cloneShadow(host.shadowRoot);
+
+      const shell = new DOMParser().parseFromString(host.outerHTML, "text/html")
+        .body.firstChild;
+      shell.appendChild(shadowClone.cloneNode(true));
+      console.log(this.count);
+      console.log(shell);
+      console.log(shadowClone);
+
+      // const hostIdentifier = `${host.tagName.toLowerCase()}-${depth}-${crypto.randomUUID().substring(0, 8)}`;
+
+      // shadowClone.querySelectorAll('style').forEach(style => {
+      //   const styleFragment = document.createDocumentFragment();
+      //   const newStyle = document.createElement('style');
+      //   newStyle.textContent = this.scopeStyles(style.textContent, hostIdentifier);
+      //   styleFragment.appendChild(newStyle);
+      //   shadowClone.insertBefore(styleFragment, style);
+      //   style.remove();
+      // });
+
+      const walker = document.createTreeWalker(
+        shadowClone,
+        NodeFilter.SHOW_ELEMENT,
+        null,
+      );
+
+      let node;
+
+      while ((node = walker.nextNode())) {
+        // node.classList.add(hostIdentifier);
+
+        if (node.shadowRoot && node.shadowRoot?.mode == "open") {
+          // this.processNestedComponent(node, shadowClone, depth + 1);
+          const tempShell = new DOMParser().parseFromString(
+            "<div></div>",
+            "text/html",
+          ).body.firstChild;
+          tempShell.appendChild(node.cloneNode(true));
+          await processShadowRoot(
+            tempShell.firstChild,
+            this.container,
+            depth + 1,
+          );
+        }
+      }
+
+      outputFragment.appendChild(shell);
+    };
+
+    await processShadowRoot(element, this.container);
+    return this.fragmentToHtml(this.fragment);
+  }
+
+  // processNestedComponent(component, parentFragment, depth) {
+  //   if (!component.shadowRoot && component.hasAttribute('shadowroot')) {
+  //     component.attachShadow({
+  //       mode: component.getAttribute('shadowrootmode') || 'open'
+  //     });
+  //   }
+  //
+  //   if (component.shadowRoot) {
+  //     console.log(component);
+  //     this.parseDOM().processShadowRoot(component, parentFragment, depth);
+  //   }
+  // }
+
+  // async cloneShadow(root) {
+  //   return new Promise((res) => {
+  //     requestAnimationFrame(() => {
+  //       const observer = new MutationObserver(() => {
+  //         clearTimeout(mutationTimeout);
+  //         mutationTimeout = setTimeout(checkStability, 0);
+  //       });
+  //
+  //       let mutationTimeout;
+  //
+  //       const checkStability = () => {
+  //         observer.disconnect();
+  //         this.cloneStableRoot(root).then(res);
+  //       };
+  //
+  //       observer.observe(root, {
+  //         childList: true,
+  //         subtree: true,
+  //         attribute: true,
+  //       });
+  //
+  //       setTimeout(checkStability, 0);
+  //     });
+  //   });
+  // }
+  //
+  async cloneShadow(root, maxC = 10) {
+    await this.letShadowRendered(root, maxC);
+
+    return this.cloneStableRoot(root);
+  }
+
+  async letShadowRendered(root, remainC) {
+    if (remainC <= 0) return;
+
+    await new Promise(r => requestAnimationFrame(r));
+
+    const pendingImg = Array.from(root.querySelectorAll('img'))
+      .filter(img => !img.complete);
+
+    if (pendingImg.length > 0) {
+      await Promise.all(
+        pendingImg.map(img => new Promise(r => {
+          img.onload = img.onerror = r;
+        }))
+      );
+      return this.letShadowRendered(root, remainC - 1);
+    }
+
+    const pendingShadows = Array.from(root.querySelectorAll('*'))
+      .filter(el => el.shadowRoot && !this.isElementStable(el));
+
+    if (pendingShadows.length > 0) {
+      await Promise.all(
+        pendingShadows.map(el => this.letShadowRendered(el.shadowRoot, remainC - 1))
+      );
+
+      return this.letShadowRendered(root, remainC - 1);
+    }
+
+    if (!this.isElementStable(root.host)) {
+      return this.letShadowRendered(root, remainC - 1);
+    }
+  }
+
+  isElementStable(el) {
+    return el.offsetWidth > 0 || el.offSetHeight > 0;
+  }
+
+  cloneStableRoot(root) {
+      const fragment = document.createDocumentFragment();
+
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_ALL, null);
+
+      const nodeMap = new Map();
+      let node;
+
+      while ((node = walker.nextNode())) {
+        const clone = node.cloneNode(true);
+        nodeMap.set(node, clone);
+
+        if (node.parentNode && nodeMap.has(node.parentNode)) {
+          let parentClone = nodeMap.get(node.parentNode);
+          let alreadyExists = false;
+
+          // when treewalker walk, it walk from parent -> last iterable children
+          // for parent node, it will include children into nodemap
+          // either for parent, just take the outerHTML then children need to readded repeatedly
+          // or loop parent, and check if current clone is already in parent
+          // TODO: check if this work when depth > 1
+          for (const child of parentClone.children) {
+            if (child.isEqualNode(clone)) {
+              alreadyExists = true;
+              break;
+            }
+          }
+
+          // console.log(clone);
+
+          if (!alreadyExists) {
+            nodeMap.get(node.parentNode).appendChild(clone);
+          }
+        } else if (node === root) {
+          fragment.appendChild(clone);
+        }
+      }
+
+      root.childNodes.forEach((node) => {
+        fragment.appendChild(nodeMap.get(node) || node.cloneNode(true));
+      });
+
+      return fragment;
+      // return fragment;
+  }
+
+  // scopeStyles(css, identifier) {
+  //   return css.replace(/((?:[^@{}]|\{[^{}]*\})*)(\{[^{}]*\})/g,
+  //     (match, selectors, rules) => {
+  //       if (selectors.trim().startsWith('@')) return match;
+  //
+  //       return selectors.split(',')
+  //         .map(selector => {
+  //           const trimmed = selector.trim();
+  //           if (trimmed.startsWith(':host') ||
+  //               trimmed.startsWith('::slotted') ||
+  //               trimmed.includes('var(--')) {
+  //             return trimmed;
+  //           }
+  //           return `.${identifier} ${trimmed}`;
+  //         })
+  //         .join(', ') + rules;
+  //   });
+  // }
+
+  async waitForImages(node) {
+    const images = node.querySelectorAll("img");
+    if (images.length === 0) return;
+
+    return Promise.all(
+      Array.from(images).map((img) => {
+        if (img.complete) return Promise.resolve();
+
+        return new Promise((resolve) => {
+          img.addEventListener("load", resolve);
+          img.addEventListener("error", resolve);
+        });
+      }),
+    );
+  }
+
+  fragmentToHtml(fragment) {
+    const div = document.createElement("div");
+    div.appendChild(fragment.cloneNode(true));
+    return div.innerHTML;
+  }
+}

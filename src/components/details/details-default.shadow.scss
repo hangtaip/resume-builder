@@ -1,0 +1,86 @@
+@use "../../css/base";
+
+$style-font: "Courier", "monospace";
+:host {
+  height: 100%;
+  width: 100%;
+}
+
+.container {
+  @include base.container($bg-c: hsla(0, 0%, 0%, 0));
+  height: 100%;
+  width: -webkit-fill-available;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10ch, 1fr));
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "pic info info"
+    "pic info info"
+    "motto motto motto";
+  gap: clamp(0.5rem, 1vw, 0.8rem);
+  padding: 0.5rem 0.5rem 0 0.5rem;
+  border-right: 1px solid hsla(0, 0%, 0%, 0.2);
+  border-bottom: none;
+  font-family: $style-font;
+
+  &.all-fullWidth {
+    border-right: none;
+  }
+
+  .pic {
+    grid-area: pic;
+  }
+
+  .info {
+    grid-area: info;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: clamp(0.4rem, 5px, 0.6rem) 0;
+
+    > * {
+      flex: 1 100%;
+    }
+    :nth-child(1) {
+      // flex: 1 250px;
+    }
+  }
+
+  .attr {
+    display: flex;
+    gap: 1rem;
+
+    > .field {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  }
+
+  .motto {
+    grid-area: motto;
+    text-align: justify;
+    align-self: anchor-center;
+
+    p::first-letter {
+      // initial-letter: 2 1;
+    }
+  }
+
+  .data:not([data-attr="motto"]) {
+    word-spacing: 3px;
+    letter-spacing: 0.2px;
+    font-weight: 500;
+  }
+
+  .icon {
+    width: 10px;
+    color: hsla(203, 39%, 57%, 1);
+  }
+
+  @media screen and (max-width: 800px) {
+    border-right: none;
+    // border-bottom: 1px solid hsla(0, 0%, 0%, 0.2);
+  }
+}
