@@ -28,7 +28,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: "Resume",
+      title: "Resume Builder",
       // favicon: `${path.resolve(__dirname, "src")}/favicon.ico`, 
     }),
     new CopyPlugin({
