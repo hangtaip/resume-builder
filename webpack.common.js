@@ -27,7 +27,18 @@ module.exports = {
       },
       {
         test: /\.svg$/i,
+        resourceQuery: /raw/,
         loader: "svg-inline-loader",
+      },
+      {
+        test: /\.svg$/i,
+        resourceQuery: { not: [/raw/] },
+        type: "asset",
+        parser: {
+          dataUrlCondition: {
+            maxSize: 4 * 1024,
+          },
+        },
       },
     ],
   },
