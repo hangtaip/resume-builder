@@ -66,6 +66,9 @@ module.exports = merge(common, {
       new CssMinimizerPlugin(),
     ],
   },
+  output: {
+    publicPath: "./",
+  },
   plugins: [
     new MiniCssExtractPlugin({
       filename: "css/[name].[contenthash].bundle.css",
