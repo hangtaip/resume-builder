@@ -16,6 +16,7 @@ import objectRegistry from "../../../js/objectRegistry.js";
 import resizeObserverManager, {
   StabilizationState,
 } from "../../../js/resizeObserverManager.js";
+import { loadComponent } from "../../../js/helper.js";
 
 export default class ResumeDefault extends HTMLElement {
   constructor() {
@@ -38,9 +39,35 @@ export default class ResumeDefault extends HTMLElement {
     this.eduElement;
     this.expElement;
     this.unsubscribe;
+    this.compList = [
+      {
+        path: "userPic/userPic.js",
+        tagName: "user-pic",
+        folderType: "components",
+      },
+      {
+        path: "details/details.js",
+        tagName: "user-details",
+        folderType: "components",
+      },
+      {
+        path: "skills/skills.js",
+        tagName: "user-skills",
+        folderType: "components",
+      },
+      {
+        path: "educations/educations.js",
+        tagName: "user-education",
+        folderType: "components",
+      },
+      {
+        path: "experiences/experiences.js",
+        tagName: "user-experience",
+        folderType: "components",
+      },
+    ];
 
     this.template = document.createElement("template");
-
     this.styleToImport = "data-style=default";
     this.template.innerHTML = `
       <div class="container">
@@ -61,6 +88,7 @@ export default class ResumeDefault extends HTMLElement {
   }
 
   connectedCallback() {
+    this.loadComponents();
     this.setupEventListener();
     this.render().then(() => {
       // this.resolveReady();
@@ -73,6 +101,13 @@ export default class ResumeDefault extends HTMLElement {
   disconnectedCallback() {
     this.unsubscribe();
     this.abortGenericEventListener();
+  }
+
+  async loadComponents() {
+    const compPromises = loadComponent(this.compList);
+    await Promise.all(compPromises);
+
+    return new Promise(resolve => requestAnimationFrame(() => resolve()));
   }
 
   async render() {

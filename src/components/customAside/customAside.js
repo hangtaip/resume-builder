@@ -1,6 +1,7 @@
 import DOMPurify from "dompurify";
 import Listener from "../../js/listener.js";
 import { registerCustomElement } from "../../js/registerComponent";
+import { loadComponent } from "../../js/helper.js";
 import styles from "./customAside.shadow.scss";
 import { icon, library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -28,7 +29,7 @@ export default class CustomAside extends HTMLElement {
     this.attachShadow({ mode: "open" });
     this.dataset.state;
     this.state = new Map();
-    this.listener;
+    this.listener; 
     this.imgBlob;
     this.parser = new ShadowParser();
     this.customEventData = {
@@ -262,7 +263,6 @@ export default class CustomAside extends HTMLElement {
             });
 
           elem.classList.add("selected");
-          this.shadowRoot.querySelector(".tooltip").style.display = "none";
           this.shadowRoot.querySelector(".tooltip").hidePopover(); 
 
           // loading
@@ -482,6 +482,7 @@ export default class CustomAside extends HTMLElement {
       tooltip.style.setProperty("--tooltip-anchor-name", elem.closest(".template-list-button").style.getPropertyValue("--tooltip-anchor-name"));
       tooltip.showPopover({ source: elem });
 
+      console.log("here");
       tooltip.querySelector("img").src = elem.dataset.src;
       tooltip.querySelector("img").onload = (e) => {
         tooltip.querySelector("loading-block").classList.remove("visible");

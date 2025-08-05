@@ -18,7 +18,12 @@ module.exports = {
       },
       {
         test: /\.(png|jpg|jpeg|gif|otf|ttf|woff|woff2)$/i,
-        type: "asset/resource",
+        type: "asset",
+        parser: {
+          dataUrlCondition: {
+            maxSize: 4 * 1024,
+          }
+        },
       },
       {
         test: /\.svg$/i,
@@ -41,6 +46,9 @@ module.exports = {
   ],
   optimization: {
     runtimeChunk: "single",
+    splitChunks: {
+      chunks: "all",
+    },
   },
   output: {
     path: path.resolve(__dirname, "dist"),

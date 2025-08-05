@@ -15,12 +15,27 @@ export default class FormSkills extends HTMLElement {
     this.listener;
     this.customEventData = {
       await: false,
-      awaitDetail() { return 0 },
+      awaitDetail() {
+        return 0;
+      },
       eventName: "handleCustomEvent",
       details: "",
     };
     this.unsubscribe;
     library.add(faRectangleXmark);
+  }
+
+  connectedCallback() {
+    this.render();
+    this.setValueRequestDetail();
+    this.publishCustomEvent(this.customEventData);
+    this.styling();
+    this.setupEventListener();
+    // this.testDataInsert();
+  }
+
+  disconnectedCallback() {
+    this.unsubscribe();
   }
 
   render() {
@@ -127,8 +142,8 @@ export default class FormSkills extends HTMLElement {
       Object.values(event.detail.data.owner.skills).forEach((skill, i) => {
         // inputs += this.customInput(`["${skill.name}","${skill.color}"]`);
         if (existingInputs[i]) {
-          return this.shadowRoot.querySelector("custom-input").dataset.values = JSON.stringify(skill);
-          ;
+          return (this.shadowRoot.querySelector("custom-input").dataset.values =
+            JSON.stringify(skill));
         }
         inputs += this.customInput(skill);
       });
@@ -158,7 +173,7 @@ export default class FormSkills extends HTMLElement {
     if (objectRegistry.registry.has("formLoaded")) {
       const readyCnt = objectRegistry.get("formLoaded").get("readyCnt") + 1;
       const formCnt = objectRegistry.get("formLoaded").get("formCnt");
-      objectRegistry.get("formLoaded").set("readyCnt", readyCnt); 
+      objectRegistry.get("formLoaded").set("readyCnt", readyCnt);
 
       if (readyCnt == formCnt) {
         this.customEventData.await = false;
@@ -170,7 +185,9 @@ export default class FormSkills extends HTMLElement {
         this.publishCustomEvent(this.customEventData);
       }
     } else {
-      console.warn(`${this.constructor.name}: Please set default state for formLoaded before dispatch importDataLoaded event.`);
+      console.warn(
+        `${this.constructor.name}: Please set default state for formLoaded before dispatch importDataLoaded event.`,
+      );
     }
   }
 
@@ -178,20 +195,20 @@ export default class FormSkills extends HTMLElement {
     let inputs = "";
     const existingInputs = this.shadowRoot.querySelectorAll("custom-input");
     Object.values(yaml.owner.skills).forEach((skill, i) => {
-        // inputs += this.customInput(`["${skill.name}","${skill.color}"]`);
-        if (existingInputs[i]) {
-          return this.shadowRoot.querySelector("custom-input").dataset.values = JSON.stringify(skill);
-          ;
-        }
-        inputs += this.customInput(skill);
-      });
-      const input = new DOMParser().parseFromString(inputs, "text/html");
-      const fragments = new DocumentFragment();
-      while (input.body.firstChild) {
-        fragments.append(input.body.firstChild);
+      // inputs += this.customInput(`["${skill.name}","${skill.color}"]`);
+      if (existingInputs[i]) {
+        return (this.shadowRoot.querySelector("custom-input").dataset.values =
+          JSON.stringify(skill));
       }
+      inputs += this.customInput(skill);
+    });
+    const input = new DOMParser().parseFromString(inputs, "text/html");
+    const fragments = new DocumentFragment();
+    while (input.body.firstChild) {
+      fragments.append(input.body.firstChild);
+    }
 
-      this.shadowRoot.querySelector(".view").append(fragments);
+    this.shadowRoot.querySelector(".view").append(fragments);
   }
 
   customInput(data = "") {
@@ -222,7 +239,10 @@ export default class FormSkills extends HTMLElement {
   setValueRequestDetail() {
     this.customEventData.await = false;
     this.customEventData.eventName = "valueRequest";
-    this.customEventData.details = { [this.tagName.toLowerCase()]: this.shadowRoot.querySelectorAll("custom-input")};
+    this.customEventData.details = {
+      [this.tagName.toLowerCase()]:
+        this.shadowRoot.querySelectorAll("custom-input"),
+    };
   }
 
   async publishCustomEvent(data) {
@@ -241,19 +261,6 @@ export default class FormSkills extends HTMLElement {
     } catch (err) {
       console.error(`Failed to publish ${data.eventName} : ${err}`);
     }
-  }
-
-  connectedCallback() {
-    this.render();
-    this.setValueRequestDetail();
-    this.publishCustomEvent(this.customEventData);
-    this.styling();
-    this.setupEventListener();
-    // this.testDataInsert();
-  }
-
-  disconnectedCallback() {
-    this.unsubscribe();
   }
 }
 
