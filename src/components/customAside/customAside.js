@@ -1,7 +1,6 @@
 import DOMPurify from "dompurify";
 import Listener from "../../js/listener.js";
 import { registerCustomElement } from "../../js/registerComponent";
-import { loadComponent } from "../../js/helper.js";
 import styles from "./customAside.shadow.scss";
 import { icon, library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -9,9 +8,10 @@ import {
   faFileArrowDown,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import selectIcon from "../../assets/imgs/icons/done_outline.svg";
-import browseIcon from "../../assets/imgs/icons/browse.svg";
-import buildIcon from "../../assets/imgs/icons/build.svg";
+import selectIcon from "../../assets/imgs/icons/done_outline.svg?raw";
+import browseIcon from "../../assets/imgs/icons/browse.svg?raw";
+import buildIcon from "../../assets/imgs/icons/build.svg?raw";
+import imgNotAvailable from "../../assets/imgs/img_not_available.svg";
 import yaml from "js-yaml";
 import eventManager from "../../js/eventManager.js";
 import dataBase from "../../data/data-base.yaml";
@@ -488,7 +488,7 @@ export default class CustomAside extends HTMLElement {
       };
       tooltip.querySelector("img").onerror = (e) => {
         tooltip.querySelector("loading-block").classList.remove("visible")
-        tooltip.querySelector("img").src = "../../assets/imgs/img_not_available.svg";
+        tooltip.querySelector("img").src = imgNotAvailable;
         tooltip.querySelector("img").alt = "No image found";
       }
     } else {
