@@ -1,6 +1,7 @@
 import DOMPurify from "dompurify";
 import Listener from "../../js/listener.js";
 import { registerCustomElement } from "../../js/registerComponent";
+import { loadComponent } from "../../js/helper.js";
 import styles from "./customAside.shadow.scss";
 import { icon, library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -12,6 +13,7 @@ import selectIcon from "../../assets/imgs/icons/done_outline.svg?raw";
 import browseIcon from "../../assets/imgs/icons/browse.svg?raw";
 import buildIcon from "../../assets/imgs/icons/build.svg?raw";
 import imgNotAvailable from "../../assets/imgs/img_not_available.svg";
+import templateResumeDefault from "../../pages/home/resume_default/sample.png";
 import yaml from "js-yaml";
 import eventManager from "../../js/eventManager.js";
 import dataBase from "../../data/data-base.yaml";
@@ -622,7 +624,8 @@ export default class CustomAside extends HTMLElement {
       },
       {
         name: "default",
-        img: "../../assets/imgs/templates/resume_default/sample.png",
+        // img: "../../assets/imgs/templates/resume_default/sample.png",
+        img: templateResumeDefault,
       },
       // {
       //   name: "default",
