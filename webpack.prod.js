@@ -2,6 +2,7 @@ const { merge } = require("webpack-merge");
 const common = require("./webpack.common.js");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = merge(common, {
   devServer: {
@@ -70,5 +71,6 @@ module.exports = merge(common, {
       filename: "css/[name].[contenthash].bundle.css",
       chunkFilename: "css/[name].[contenthash].chunk.css",
     }),
+    new BundleAnalyzerPlugin(),
   ],
 });

@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.prod.js",
     "dev": "webpack serve --open --config webpack.dev.js",
-    "prod": "webpack serve --open --config webpack.prod.js"
+    "prod": "webpack serve --open --config webpack.prod.js",
+    "predeplay": "pnpm run build",
+    "deploy": "gh-pages -d dist"
   },
   "keywords": [],
   "author": "hangtaip",
@@ -20,6 +22,7 @@
     "css-loader": "^7.1.2",
     "css-minimizer-webpack-plugin": "^7.0.2",
     "dompurify": "^3.2.6",
+    "gh-pages": "^6.3.0",
     "html-webpack-plugin": "^5.6.3",
     "js-yaml": "^4.1.0",
     "mini-css-extract-plugin": "^2.9.2",
@@ -30,6 +33,7 @@
     "svg-inline-loader": "^0.8.2",
     "to-string-loader": "^1.2.0",
     "webpack": "^5.101.0",
+    "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.2",
     "yamljs": "^0.3.0"

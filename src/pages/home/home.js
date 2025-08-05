@@ -4,6 +4,7 @@ import {
   getRegisteredCustomElements,
   registerCustomElement,
 } from "../../js/registerComponent.js";
+import { loadComponent } from "../../js/helper.js";
 import styles from "./home.shadow.scss";
 import eventManager from "../../js/eventManager.js";
 
@@ -13,6 +14,56 @@ export default class Home extends HTMLElement {
     this.attachShadow({ mode: "open" });
     this.homeForm;
     this.unsubscribe;
+    this.compList = [
+      {
+        path: "customNav/customNav.js",
+        tagName: "custom-nav",
+        folderType: "components",
+      },
+      {
+        path: "customAside/customAside.js",
+        tagName: "custom-aside",
+        folderType: "components",
+      },
+      {
+        path: "previewResume/previewResume.js",
+        tagName: "preview-resume",
+        folderType: "components",
+      },
+      {
+        path: "home/resume_default/resume_default.js",
+        tagName: "resume-default",
+        folderType: "pages",
+      }, 
+      {
+        path: "loadingScreen/loadingScreen.js",
+        tagName: "loading-screen",
+        folderType: "components",
+      },
+      {
+        path: "loadingBlock/loadingBlock.js",
+        tagName: "loading-block",
+        folderType: "components",
+      },
+    ];
+  }
+
+  connectedCallback() {
+    this.loadComponents();
+    this.render();
+    this.styling();
+    this.setupEventListener();
+  }
+
+  disconnectedCallback() {
+    this.unsubscribe?.();
+  }
+
+  async loadComponents() {
+    const compPromises = loadComponent(this.compList);
+    await Promise.all(compPromises);
+
+    return new Promise(resolve => requestAnimationFrame(() => resolve()));
   }
 
   render() {
@@ -138,16 +189,6 @@ export default class Home extends HTMLElement {
       console.log("external");
     }
   } 
-
-  connectedCallback() {
-    this.render();
-    this.styling();
-    this.setupEventListener();
-  }
-
-  disconnectedCallback() {
-    this.unsubscribe?.();
-  }
 }
 
 //customElements.define('resume-home', Home);
