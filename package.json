@@ -8,7 +8,7 @@
     "build": "webpack --config webpack.prod.js",
     "dev": "webpack serve --open --config webpack.dev.js",
     "prod": "webpack serve --open --config webpack.prod.js",
-    "predeplay": "pnpm run build",
+    "predeploy": "pnpm run build",
     "deploy": "gh-pages -d dist"
   },
   "keywords": [],

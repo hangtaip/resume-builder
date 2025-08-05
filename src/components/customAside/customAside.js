@@ -482,7 +482,6 @@ export default class CustomAside extends HTMLElement {
       tooltip.style.setProperty("--tooltip-anchor-name", elem.closest(".template-list-button").style.getPropertyValue("--tooltip-anchor-name"));
       tooltip.showPopover({ source: elem });
 
-      console.log("here");
       tooltip.querySelector("img").src = elem.dataset.src;
       tooltip.querySelector("img").onload = (e) => {
         tooltip.querySelector("loading-block").classList.remove("visible");
