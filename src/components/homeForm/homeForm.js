@@ -5,11 +5,11 @@ import { loadComponent } from "../../js/helper.js";
 import styles from "./homeForm.shadow.scss";
 
 export default class HomeForm extends HTMLElement {
-   constructor() {
-      super();
-      this.attachShadow({ mode: "open" });
-      this.listener;
-      this.compList = [
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this.listener;
+    this.compList = [
       {
         path: "customInput/customInput.js",
         tagName: "custom-input",
@@ -17,9 +17,10 @@ export default class HomeForm extends HTMLElement {
       },
       {
         path: "customTextarea/customTextarea.js",
-        tagName: "custom-area",
+        tagName: "custom-textarea",
         folderType: "components",
-      },,
+      },
+      ,
       {
         path: "formPersonal/formPersonal.js",
         tagName: "form-personal",
@@ -39,26 +40,41 @@ export default class HomeForm extends HTMLElement {
         path: "formExperience/formExperience.js",
         tagName: "form-experience",
         folderType: "components",
-      }
+      },
     ];
-   }
+  }
 
-   connectedCallback() {
-      this.loadComponents();
-      this.render();
-      this.styling();
-      this.setupEventListener();
-   }
+  async connectedCallback() {
+    await this.loadComponents();
+    this.render();
+    this.styling();
+    this.setupEventListener();
+  }
 
-   async loadComponents() {
+  async loadComponents() {
+    const subComponents = [
+      customElements.get("custom-input"),
+      customElements.get("custom-textarea"),
+      customElements.get("form-personal"),
+      customElements.get("form-skills"),
+      customElements.get("form-education"),
+      customElements.get("form-experience"),
+    ];
+
+    const validSubComponents = subComponents.filter(
+      (comp) => comp && typeof comp === "function",
+    );
+
+    if (validSubComponents.length > 0) {
+      await new Promise((resolve) => requestAnimationFrame(() => resolve()));
+    } else {
       const compPromises = loadComponent(this.compList);
       await Promise.all(compPromises);
+    }
+  }
 
-      return new Promise(resolve => requestAnimationFrame(() => resolve()));
-   }
-
-   render() {
-      const dom = `
+  render() {
+    const dom = `
          <div class="container">
             <form>
                <form-personal></form-personal>
@@ -69,30 +85,30 @@ export default class HomeForm extends HTMLElement {
          </div>
          `;
 
-      this.shadowRoot.innerHTML = DOMPurify.sanitize(dom);
-   }
+    this.shadowRoot.innerHTML = DOMPurify.sanitize(dom);
+  }
 
-   styling() {
-      const sheet = new CSSStyleSheet();
-      sheet.replaceSync(styles.toString());
-      this.shadowRoot.adoptedStyleSheets = [sheet];
-   }
+  styling() {
+    const sheet = new CSSStyleSheet();
+    sheet.replaceSync(styles.toString());
+    this.shadowRoot.adoptedStyleSheets = [sheet];
+  }
 
-   setupEventListener() {
-      this.listener = new Listener(this);
-      // this.addEventListener("click", this.listener);
-   }
+  setupEventListener() {
+    this.listener = new Listener(this);
+    // this.addEventListener("click", this.listener);
+  }
 
-   handleClick(event, delegated) {
-      const isDOM = delegated instanceof Listener;
+  handleClick(event, delegated) {
+    const isDOM = delegated instanceof Listener;
 
-      if (isDOM) {
-         event.preventDefault();
-         // this.event();
-      } else {
-         console.log("external");
-      }
-   } 
+    if (isDOM) {
+      event.preventDefault();
+      // this.event();
+    } else {
+      console.log("external");
+    }
+  }
 }
 
 registerCustomElement("home-form", HomeForm);
