@@ -1,7 +1,7 @@
-@use "../../css/base";
+@use "../../../../css/base";
 
 $fw-bold: 800;
-$style-font: "Courier", "monospace";
+$style-font: "Arial", "sans-serif";
 
 .container {
   @include base.container($bg-c: hsla(0, 0%, 0%, 0));
@@ -33,8 +33,7 @@ $style-font: "Courier", "monospace";
     flex-flow: row wrap;
     align-items: center;
     gap: 10px;
-    padding: 0 10px;
-    break-inside: avoid;
+    padding: 10px;
 
     &.field {
       font-weight: $fw-bold;
@@ -102,10 +101,4 @@ $style-font: "Courier", "monospace";
     width: 1.5rem;
   }
   /* ---pic--- */
-
-  @media print {
-    h3 {
-      margin-block-end: 0.5em;
-    }
-  }
 }

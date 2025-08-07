@@ -3,56 +3,43 @@ export function isNullUndefinedOrEmpty(value) {
 }
 
 export function loadComponent(list) {
-  const promises = [];
-
   if (!list || list.length === 0) {
     console.warn("Please provide an array of an object like { path: path-to-module, tagName: custom-comp, folderType: components }");
     return promises;
   }
 
-  list.forEach(componentDetail => {
-    const folderType = componentDetail.folderType;
+  const promises = list.map(componentDetail => {
+    const { path, tagName, folderType } = componentDetail;
     let importPromise; 
 
-    const promise = new Promise((resolve, reject) => {
-      switch(folderType) {
-        case "components":
-          importPromise = import(
-            /* webpackChunkNames: "[request]" */
-            /* webpackPrefetch: true */
-            `../components/${componentDetail.path}`
-          );
-          break;
-        case "pages":
-          importPromise = import(
-            /* webpackChunkNames: "[request]" */
-            /* webpackPrefetch: true */
-            `../pages/${componentDetail.path}`
-          );
-          break;
-        default:
-          console.error(`Error: unknown folder type ${folderType}`);
-          return reject(new Error(`Invalid folder type: ${folderType}`));
-      }
+    switch(folderType) {
+      case "components":
+        importPromise = import(
+          /* webpackChunkNames: "[request]" */
+          /* webpackPrefetch: true */
+          `../components/${path}`
+        );
+        break;
+      case "pages":
+        importPromise = import(
+          /* webpackChunkNames: "[request]" */
+          /* webpackPrefetch: true */
+          `../pages/${path}`
+        );
+        break;
+      default:
+        console.error(`Error: unknown folder type ${folderType}`);
+        return Promise.reject(new Error(`Invalid folder type: ${folderType}`));
+    }
 
-      importPromise
-      .then(() => {
-          customElements.whenDefined(componentDetail.tagName)
-            .then(() => {
-              resolve();
-            }).catch((err) => {
-              console.error(`Error defining custom element ${componentDetail.tagName}:`, err);
-              reject(err);
-            });
-      }).catch((err) => {
-        console.error(`Failed to load component module from ${componentDetail.tagName}:`, err);
-        reject(err);
+    return importPromise
+      .then(() => customElements.whenDefined(tagName))
+      .catch((err) => {
+        console.error(`Failed to load component module from ${tagName}:`, err);
+        throw (err);
       });
-    }) 
+  }) 
 
-
-    promises.push(promise)
-  });
-
+  console.log(promises);
   return promises;
 }

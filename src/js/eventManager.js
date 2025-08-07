@@ -45,7 +45,7 @@ class EventManager {
 
       currentListeners.forEach(listener => {
         try {
-          if (typeof listener === "function") {
+          if (typeof listener === "function") { 
             listener(customEvent);
           } else if (listener && typeof listener.handleEvent === "function") {
             listener.handleEvent(customEvent);

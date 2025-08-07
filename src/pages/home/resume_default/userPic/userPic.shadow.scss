@@ -1,4 +1,4 @@
-@use "../../css/base";
+@use "../../../../css/base";
 
 .container {
   @include base.container($bg-c: hsla(255, 100%, 100%, 1));
