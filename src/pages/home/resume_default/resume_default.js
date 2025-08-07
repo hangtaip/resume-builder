@@ -38,32 +38,33 @@ export default class ResumeDefault extends HTMLElement {
     this.skillsElement;
     this.eduElement;
     this.expElement;
+    this.completeFormRequestData;
     this.unsubscribe;
     this.compList = [
       {
-        path: "userPic/userPic.js",
+        path: "home/resume_default/userPic/userPic.js",
         tagName: "user-pic",
-        folderType: "components",
+        folderType: "pages",
       },
       {
-        path: "details/details.js",
+        path: "home/resume_default/details/details.js",
         tagName: "user-details",
-        folderType: "components",
+        folderType: "pages",
       },
       {
-        path: "skills/skills.js",
+        path: "home/resume_default/skills/skills.js",
         tagName: "user-skills",
-        folderType: "components",
+        folderType: "pages",
       },
       {
-        path: "educations/educations.js",
-        tagName: "user-education",
-        folderType: "components",
+        path: "home/resume_default/educations/educations.js",
+        tagName: "user-educations",
+        folderType: "pages",
       },
       {
-        path: "experiences/experiences.js",
-        tagName: "user-experience",
-        folderType: "components",
+        path: "home/resume_default/experiences/experiences.js",
+        tagName: "user-experiences",
+        folderType: "pages",
       },
     ];
 
@@ -87,12 +88,10 @@ export default class ResumeDefault extends HTMLElement {
     `;
   }
 
-  connectedCallback() {
-    this.loadComponents();
+  async connectedCallback() {
     this.setupEventListener();
-    this.render().then(() => {
-      // this.resolveReady();
-    });
+    await this.loadComponents();
+    await this.render();
     this.styling();
     this.setupGenericEventListener();
     this.componentReady();
@@ -106,8 +105,6 @@ export default class ResumeDefault extends HTMLElement {
   async loadComponents() {
     const compPromises = loadComponent(this.compList);
     await Promise.all(compPromises);
-
-    return new Promise(resolve => requestAnimationFrame(() => resolve()));
   }
 
   async render() {
@@ -151,7 +148,7 @@ export default class ResumeDefault extends HTMLElement {
     this.skillsElement = this.shadowRoot.querySelector(".skills");
     this.eduElement = this.shadowRoot.querySelector(".edu");
     this.expElement = this.shadowRoot.querySelector(".exp");
-    // await new Promise(resolve => requestAnimationFrame(() => resolve()));
+
     await new Promise(resolve => requestAnimationFrame(() => resolve()));
   }
 
@@ -166,13 +163,13 @@ export default class ResumeDefault extends HTMLElement {
   setupEventListener() {
     this.listener = new Listener(this);
     this.listener.setDelegates(this); 
-  }
-
-  setupGenericEventListener() { 
     this.unsubscribe = eventManager.subscribe(
       ["updateEduStyle", "resizeObserverComplete", "completeFormRequest"],
       this.listener,
     );
+  }
+
+  setupGenericEventListener() {  
     this._observedStates = new Map();
     this._observedStates.set(this, new StabilizationState());
     this._observedStates.set(this.infoElement, new StabilizationState());
@@ -244,6 +241,13 @@ export default class ResumeDefault extends HTMLElement {
     const isDOM = delegated instanceof Listener;
 
     if (isDOM) {
+      // this.customEventData.await = false;
+      // this.customEventData.awaitDetail = () => { return 0; };
+      // this.customEventData.eventName = "fillResumeComponent";
+      // this.customEventData.details = { data: event.detail.data }
+      // this.publishCustomEvent(this.customEventData);
+      this.completeFormRequestData = event.detail.data;
+
       if (Object.values(event.detail.data.owner.skills).length > 9) {
         this.shadowRoot.querySelector(".container").classList.add("all-fullWidth"); 
       }
@@ -288,6 +292,12 @@ export default class ResumeDefault extends HTMLElement {
 
     const fontPromise = document.fonts ? document.fonts.ready : Promise.resolve();
     await Promise.all([fontPromise]);
+
+    this.customEventData.await = false;
+    this.customEventData.awaitDetail = () => { return 0; };
+    this.customEventData.eventName = "fillResumeComponent";
+    this.customEventData.details = { data: this.completeFormRequestData }
+    this.publishCustomEvent(this.customEventData);
 
     this.customEventData.await = false;
     this.customEventData.awaitDetail = () => { return 0; };

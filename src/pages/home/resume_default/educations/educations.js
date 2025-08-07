@@ -1,12 +1,12 @@
 import DOMPurify from "dompurify";
-import Listener from "../../js/listener.js";
+import Listener from "../../../../js/listener.js";
 // import yaml from "../../data/data.yaml";
-import { registerCustomElement } from "../../js/registerComponent.js";
+import { registerCustomElement } from "../../../../js/registerComponent.js";
 // import styles from "./educations.shadow.scss";
 import { icon, library } from "@fortawesome/fontawesome-svg-core";
 import { faUserGraduate } from "@fortawesome/free-solid-svg-icons";
-import eventManager from "../../js/eventManager.js";
-import objectRegistry from "../../js/objectRegistry.js";
+import eventManager from "../../../../js/eventManager.js";
+import objectRegistry from "../../../../js/objectRegistry.js";
 
 export default class UserEducations extends HTMLElement {
   constructor() {
@@ -34,7 +34,7 @@ export default class UserEducations extends HTMLElement {
     this._animationFrameId = null;
     this._pendingSize = null;
 
-    this.handleCompleteFormRequest = this.handleCompleteFormRequest.bind(this);
+    this.handleFillResumeComponent = this.handleFillResumeComponent.bind(this);
     this.handleTransitionend = this.handleTransitionend.bind(this);
     library.add(faUserGraduate);
   }
@@ -110,7 +110,7 @@ export default class UserEducations extends HTMLElement {
   setupEventListener() {
     this.listener = new Listener(this);
     this.listener.setDelegates(this);
-    this.unsubscribe = eventManager.subscribe("completeFormRequest", this.listener);
+    this.unsubscribe = eventManager.subscribe("fillResumeComponent", this.listener);
   }
 
  setupGenericEventListener() {
@@ -134,7 +134,7 @@ export default class UserEducations extends HTMLElement {
     this.shadowRoot.adoptedStyleSheets = [sheet];
   }
 
-  async handleCompleteFormRequest(event, delegated) {
+  async handleFillResumeComponent(event, delegated) {
     const isDOM = delegated instanceof Listener;
 
     if (isDOM) {

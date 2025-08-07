@@ -1,14 +1,14 @@
 import DOMPurify from "dompurify";
-import Listener from "../../js/listener.js";
-import { isNullUndefinedOrEmpty } from "../../js/helper.js";
+import Listener from "../../../../js/listener.js";
+import { isNullUndefinedOrEmpty } from "../../../../js/helper.js";
 // import yaml from "../../data/data.yaml";
-import { registerCustomElement } from "../../js/registerComponent.js";
+import { registerCustomElement } from "../../../../js/registerComponent.js";
 // import styles from "./experiences.shadow.scss";
 import { icon, library } from "@fortawesome/fontawesome-svg-core";
 import { faLaptopCode } from "@fortawesome/free-solid-svg-icons";
-import TraceDom from "../../js/traceDom.js";
-import eventManager from "../../js/eventManager.js";
-import objectRegistry from "../../js/objectRegistry.js";
+import TraceDom from "../../../../js/traceDom.js";
+import eventManager from "../../../../js/eventManager.js";
+import objectRegistry from "../../../../js/objectRegistry.js";
 
 export default class UserExperiences extends HTMLElement {
   constructor() {
@@ -30,7 +30,7 @@ export default class UserExperiences extends HTMLElement {
       details: "",
     };
     this.styleType = this.dataset.style || "default";
-    this.handleCompleteFormRequest = this.handleCompleteFormRequest.bind(this);
+    this.handleFillResumeComponent = this.handleFillResumeComponent.bind(this);
     this.unsubscribe;
     library.add(faLaptopCode);
   }
@@ -139,10 +139,10 @@ export default class UserExperiences extends HTMLElement {
   setupEventListener() {
     this.listener = new Listener(this);
     this.listener.setDelegates(this);
-    this.unsubscribe = eventManager.subscribe("completeFormRequest", this.listener);
+    this.unsubscribe = eventManager.subscribe("fillResumeComponent", this.listener);
   }
 
-  async handleCompleteFormRequest(event, delegated) {
+  async handleFillResumeComponent(event, delegated) {
     const isDOM = delegated instanceof Listener;
 
     if (isDOM) {

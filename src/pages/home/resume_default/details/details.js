@@ -1,8 +1,8 @@
 import DOMPurify from "dompurify";
-import Listener from "../../js/listener.js";
+import Listener from "../../../../js/listener.js";
 // import yaml from "../../data/data.yaml";
-import country_codes from "../../data/country_codes.yaml";
-import { registerCustomElement } from "../../js/registerComponent.js";
+import country_codes from "../../../../data/country_codes.yaml";
+import { registerCustomElement } from "../../../../js/registerComponent.js";
 // import styles from "./details.shadow.scss";
 import { icon, library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -13,8 +13,8 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
-import eventManager from "../../js/eventManager.js";
-import objectRegistry from "../../js/objectRegistry.js";
+import eventManager from "../../../../js/eventManager.js";
+import objectRegistry from "../../../../js/objectRegistry.js";
 
 export default class UserDetails extends HTMLElement {
   constructor() {
@@ -28,6 +28,7 @@ export default class UserDetails extends HTMLElement {
     });
     this.listener;
     this.styleType = this.dataset.style || "default";
+    this.handleFillResumeComponent = this.handleFillResumeComponent.bind(this);
     this.unsubscribe;
     library.add(
       faCalendarDays,
@@ -40,12 +41,12 @@ export default class UserDetails extends HTMLElement {
   }
 
   connectedCallback() {
+    this.setupEventListener();
     // this.testRender();
     this.render().then(() => {
       this.resolveReady();
     });
     this.styling();
-    this.setupEventListener();
   }
 
   disconnectedCallback() {
@@ -150,10 +151,10 @@ export default class UserDetails extends HTMLElement {
   setupEventListener() {
     this.listener = new Listener(this);
     this.listener.setDelegates(this);
-    this.unsubscribe = eventManager.subscribe("completeFormRequest", this.listener);
+    this.unsubscribe = eventManager.subscribe("fillResumeComponent", this.listener);
   }
 
-  async handleCompleteFormRequest(event, delegated) {
+  async handleFillResumeComponent(event, delegated) {
     const isDOM = delegated instanceof Listener;
 
     if (isDOM) {

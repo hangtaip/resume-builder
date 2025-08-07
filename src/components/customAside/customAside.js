@@ -64,10 +64,11 @@ export default class CustomAside extends HTMLElement {
         break;
     }
   }
-  connectedCallback() {
-    this.render();
-    this.styling();
+  async connectedCallback() {
     this.setupEventListener();
+    await this.render();
+    this.styling();
+    this.setupGenericEventListener();
     this.stateManagement();
   } 
 
@@ -75,7 +76,7 @@ export default class CustomAside extends HTMLElement {
     this.unsubscribe();
   }
 
-  render() {
+  async render() {
     const xMark = icon(faXmark, {
       classes: ["fa-xMark", "icon"],
     });
@@ -118,7 +119,7 @@ export default class CustomAside extends HTMLElement {
                   </button>
                 </btn-group>
                 <options>
-                  ${this.setTemplateOptions()}
+                  ${await this.setTemplateOptions()}
                   ${this.setCustomOptions()}
                 </options> 
             </aside>
@@ -136,6 +137,8 @@ export default class CustomAside extends HTMLElement {
     //   fragments.append(container.body.firstChild);
     // }
     // this.shadowRoot.append(fragments);
+    //
+    await new Promise(resolve => requestAnimationFrame(() => resolve()));
   }
 
   styling() {
@@ -150,14 +153,17 @@ export default class CustomAside extends HTMLElement {
 
   setupEventListener() {
     this.listener = new Listener(this);
-    this.listener.setDelegates(this);
+    this.listener.setDelegates(this); 
+    this.shadowRoot.addEventListener("transitionstart", this.listener);
+    this.subscribe = eventManager.subscribe(["valueRequest", "resumeRendered"], this.listener);
+  }
+
+  setupGenericEventListener() {
     this.shadowRoot.addEventListener("click", this.listener);
     this.shadowRoot.addEventListener("change", this.listener);
     this.shadowRoot.addEventListener("pointerover", this.listener);
     this.shadowRoot.addEventListener("pointerout", this.listener);
     this.shadowRoot.querySelector(".template-list-buttons").addEventListener("scroll", this.listener);
-    this.shadowRoot.addEventListener("transitionstart", this.listener);
-    this.subscribe = eventManager.subscribe(["valueRequest", "resumeRendered"], this.listener);
   }
 
   async handleClick(event, delegated) {
@@ -288,6 +294,8 @@ export default class CustomAside extends HTMLElement {
           this.customEventData.details = { resumeStyle: elem.dataset.attr };
           this.publishCustomEvent(this.customEventData); 
 
+          // the flow should be: load component -> subscribe -> publish
+          // currently, i am publishing -> component loaded -> subscribe
           // fill data
           this.customEventData.await = false;
           this.customEventData.awaitDetail = () => { return 0; };
@@ -583,7 +591,7 @@ export default class CustomAside extends HTMLElement {
 
   // export form to yaml
   // upload yaml to session storage
-  setTemplateOptions() {
+  async setTemplateOptions() {
     // TODO:
     // - show template choice
     // - enable 3 save history
@@ -610,22 +618,33 @@ export default class CustomAside extends HTMLElement {
           </button>
         </div>
         <div class="template-options-item">
-          ${this.setTemplateList()}
+          ${await this.setTemplateList()}
         </div>
       </div>
     `;
   }
 
-  setTemplateList() {
+  async setTemplateList() {
     const lists = [
       {
         name: "classic",
-        img: "../../pages/home/resume_classic/sample.png",
+        // img: "../../pages/home/resume_classic/sample.png",
+        // img: () => import(
+        //     /* webpackChunkNames: "template-example-[request]" */
+        //     /* webpackPrefetch: true */
+        //     "../../pages/home/resume_classic/sample.png"
+        //   )
+        path: "resume_classic/sample.png",
       },
       {
         name: "default",
         // img: "../../assets/imgs/templates/resume_default/sample.png",
-        img: templateResumeDefault,
+        // img: () => import(
+        //     /* webpackChunkNames: "template-example-[request]" */
+        //     /* webpackPrefetch: true */
+        //     "../../pages/home/resume_default/sample.png"
+        //   )
+        path: "resume_default/sample.png",
       },
       // {
       //   name: "default",
@@ -745,6 +764,37 @@ export default class CustomAside extends HTMLElement {
       // },
     ];
 
+
+    // const img = await import(
+    //   /* webpackChunkNames: "template-example-[request]" */
+    //   /* webpackPrefetch: true */
+    //   "../../pages/home/resume_default/sample.png"
+    // );
+    
+    // const imgPromises = lists.map(async (list) => {
+    //   try {
+    //     const imageModule = await list.img();
+    //     return imageModule.default;
+    //   } catch (error) {
+    //     console.warn(`Failed to load image for template "${list.name}". Using fallback.`);
+    //     return imgNotAvailable;
+    //   }
+    // });
+    const imgPromises = lists.map(list => this.loadImageWithFallback(list.path));
+ 
+    try {
+      const images = await Promise.all(imgPromises);
+      // const finalLists = lists.map((list, index) => ({
+      //   ...list,
+      //   image: images[index],
+      // }));
+      lists.forEach((list, index) => {
+        list.imagePath = images[index];
+      });
+    } catch (error) {
+      console.error("Failed to load one or more images:", error);
+    }
+
     return `
       <div class="template-list">
         <div class="template-list-text">Style</div>
@@ -752,10 +802,10 @@ export default class CustomAside extends HTMLElement {
             ${lists
               .map((list, index) => {
                 return `
-                <div class="template-list-button" style="--tooltip-anchor-name: --anchor-${list.name}-${index}">
-                  <button class="clickable hoverable template-item-btn ${list.name}-btn" type="button" title="${list.name}" popovertarget="mypopover" data-attr="${list.name}" data-src="${list.img}">${list.name}
-                  </button> 
-                </div>
+                  <div class="template-list-button" style="--tooltip-anchor-name: --anchor-${list.name}-${index}">
+                    <button class="clickable hoverable template-item-btn ${list.name}-btn" type="button" title="${list.name}" popovertarget="mypopover" data-attr="${list.name}" data-src="${list.imagePath}">${list.name}
+                    </button> 
+                  </div>
               `;
               })
               .join("")}
@@ -768,6 +818,16 @@ export default class CustomAside extends HTMLElement {
         </tooltip>
       </div>
     `;
+  }
+
+  async loadImageWithFallback(path) {
+    try {
+        const imageModule = await import(/* webpackIgnore: false */ `../../pages/home/${path}`);
+        return imageModule.default;
+    } catch (error) {
+      console.warn(`Could not find image at path "${path}". Using fallback.`);
+      return imgNotAvailable;
+    }
   }
 
   setCustomOptions() {
