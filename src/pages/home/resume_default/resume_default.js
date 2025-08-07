@@ -103,8 +103,21 @@ export default class ResumeDefault extends HTMLElement {
   }
 
   async loadComponents() {
-    const compPromises = loadComponent(this.compList);
-    await Promise.all(compPromises);
+    const subComponents = [
+      customElements.get("user-details"),
+      customElements.get("user-skills"),
+      customElements.get("user-educations"),
+      customElements.get("user-experiences"),
+    ];
+
+    const validSubComponents = subComponents.filter(comp => comp && typeof comp === "function");
+
+    if (validSubComponents.length > 0) {
+      await new Promise(resolve => requestAnimationFrame(() => resolve()));
+    } else {
+      const compPromises = loadComponent(this.compList);
+      await Promise.all(compPromises);
+    } 
   }
 
   async render() {

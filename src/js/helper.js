@@ -40,6 +40,5 @@ export function loadComponent(list) {
       });
   }) 
 
-  console.log(promises);
   return promises;
 }
