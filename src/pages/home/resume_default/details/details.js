@@ -158,8 +158,16 @@ export default class UserDetails extends HTMLElement {
     const isDOM = delegated instanceof Listener;
 
     if (isDOM) {
-      let contact = [];
-
+      // console.log(event.detail.data.owner);
+      const blob = event.detail.data.owner.image;
+      blob.text().then(src => {
+        const data = JSON.parse(src).data
+        if (data && data.includes("https://placehold.co/600x400")) {
+          this.shadowRoot.querySelector(".container").classList.add("no-pic"); 
+        } else {
+          this.shadowRoot.querySelector(".container").classList.remove("no-pic"); 
+        }
+      });
       this.shadowRoot.querySelectorAll(".field").forEach(node => { 
         node.querySelector(".data").textContent = event.detail.data.owner[node.querySelector(".data").dataset.attr];
       });

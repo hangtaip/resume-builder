@@ -23,6 +23,17 @@ $style-font: "Courier", "monospace";
   border-bottom: none;
   font-family: $style-font;
 
+  &.no-pic {
+    grid-template-areas:
+      "info"
+      "info"
+      "motto";
+
+    .pic {
+      display: none;
+    }
+  }
+
   &.all-fullWidth {
     border-right: none;
   }
