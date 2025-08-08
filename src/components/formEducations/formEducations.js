@@ -1,17 +1,20 @@
 import DOMPurify from "dompurify";
 import Listener from "../../js/listener.js";
-import { registerCustomElement } from "../../js/registerComponent";
-import styles from "./formEducation.shadow.scss";
+import { registerCustomElement } from "../../js/registerComponent.js";
+import styles from "./formEducations.shadow.scss";
 import { icon, library } from "@fortawesome/fontawesome-svg-core";
 import { faRectangleXmark } from "@fortawesome/free-solid-svg-icons";
 import yaml from "../../data/data.yaml";
 import eventManager from "../../js/eventManager.js";
 import objectRegistry from "../../js/objectRegistry.js";
 
-export default class FormEducation extends HTMLElement {
+export default class FormEducations extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
+    this.isReadyPromise = new Promise(resolve => {
+      this.resolveReady = resolve;
+    });
     this.listener;
     this.customEventData = {
       await: false,
@@ -23,7 +26,22 @@ export default class FormEducation extends HTMLElement {
     library.add(faRectangleXmark);
   }
 
-  render() {
+  connectedCallback() {
+    this.render().then(() => {
+      this.resolveReady();
+    });
+    this.setValueRequestDetail();
+    this.publishCustomEvent(this.customEventData);
+    this.styling();
+    this.setupEventListener();
+    // this.testDataInsert();
+  }
+
+  disconnectedCallback() {
+    this.unsubscribe();
+  }
+
+  async render() {
     const dom = `
          <div class="container">
             <fieldset>
@@ -37,6 +55,8 @@ export default class FormEducation extends HTMLElement {
          `;
 
     this.shadowRoot.innerHTML = DOMPurify.sanitize(dom);
+
+    await new Promise(resolve => requestAnimationFrame(() => resolve()));
   }
 
   styling() {
@@ -243,20 +263,7 @@ export default class FormEducation extends HTMLElement {
     } catch (err) {
       console.error(`Failed to publish ${data.eventName} : ${err}`);
     }
-  }
-
-  connectedCallback() {
-    this.render();
-    this.setValueRequestDetail();
-    this.publishCustomEvent(this.customEventData);
-    this.styling();
-    this.setupEventListener();
-    // this.testDataInsert();
-  }
-
-  disconnectedCallback() {
-    this.unsubscribe();
-  }
+  } 
 }
 
-registerCustomElement("form-education", FormEducation);
+registerCustomElement("form-educations", FormEducations);
