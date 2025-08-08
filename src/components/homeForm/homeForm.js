@@ -3,12 +3,21 @@ import Listener from "../../js/listener.js";
 import { registerCustomElement } from "../../js/registerComponent";
 import { loadComponent } from "../../js/helper.js";
 import styles from "./homeForm.shadow.scss";
+import eventManager from "../../js/eventManager.js";
 
 export default class HomeForm extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
     this.listener;
+    this.customEventData = {
+      await: false,
+      awaitDetail() {
+        return 0;
+      },
+      eventName: "handleCustomEvent",
+      details: "",
+    };
     this.compList = [
       {
         path: "customInput/customInput.js",
@@ -32,13 +41,13 @@ export default class HomeForm extends HTMLElement {
         folderType: "components",
       },
       {
-        path: "formEducation/formEducation.js",
-        tagName: "form-education",
+        path: "formEducations/formEducations.js",
+        tagName: "form-educations",
         folderType: "components",
       },
       {
-        path: "formExperience/formExperience.js",
-        tagName: "form-experience",
+        path: "formExperiences/formExperiences.js",
+        tagName: "form-experiences",
         folderType: "components",
       },
     ];
@@ -49,6 +58,7 @@ export default class HomeForm extends HTMLElement {
     this.render();
     this.styling();
     this.setupEventListener();
+    this.componentReady();
   }
 
   async loadComponents() {
@@ -78,9 +88,9 @@ export default class HomeForm extends HTMLElement {
          <div class="container">
             <form>
                <form-personal></form-personal>
-               <form-education></form-education> 
+               <form-educations></form-educations> 
                <form-skills></form-skills> 
-               <form-experience></form-experience> 
+               <form-experiences></form-experiences> 
             </form>
          </div>
          `;
@@ -99,15 +109,52 @@ export default class HomeForm extends HTMLElement {
     // this.addEventListener("click", this.listener);
   }
 
-  handleClick(event, delegated) {
-    const isDOM = delegated instanceof Listener;
+  async publishCustomEvent(data) {
+    try {
+      if (data.await) {
+        await data.awaitDetail();
+      }
 
-    if (isDOM) {
-      event.preventDefault();
-      // this.event();
-    } else {
-      console.log("external");
+      const eventDetail = {
+        bubbles: true,
+        composed: true,
+        detail: data.details,
+      };
+
+      eventManager.publish(data.eventName, eventDetail);
+    } catch (err) {
+      console.error(`Failed to publish ${data.eventName} : ${err}`);
     }
+  }
+
+  async componentReady() {
+    const subComponents = [
+      this.shadowRoot.querySelector("form-personal"),
+      this.shadowRoot.querySelector("form-skills"),
+      this.shadowRoot.querySelector("form-educations"),
+      this.shadowRoot.querySelector("form-experiences"),
+    ];
+
+    const validSubComponents = subComponents.filter(comp => comp && typeof comp.isReadyPromise === "object");
+
+    if (validSubComponents.length > 0) {
+      await Promise.all(validSubComponents.map(comp => comp.isReadyPromise));
+    } else {
+      await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    }
+
+    const fontPromise = document.fonts ? document.fonts.ready : Promise.resolve();
+    await Promise.all([fontPromise]);   
+
+    this.shadowRoot.querySelector(".container").classList.add("visible");
+
+    this.customEventData.await = false;
+    this.customEventData.awaitDetail = () => {
+      return 0;
+    };
+    this.customEventData.eventName = "stopLoading";
+    this.customEventData.details = {};
+    this.publishCustomEvent(this.customEventData);
   }
 }
 

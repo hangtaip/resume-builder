@@ -195,6 +195,14 @@ export default class CustomAside extends HTMLElement {
           ).map((node) => node.classList.add("transparent"));
           elem.classList.add("selected");
 
+          this.customEventData.await = false;
+          this.customEventData.awaitDetail = () => {
+            return 0;
+          };
+          this.customEventData.eventName = "startLoading";
+          this.customEventData.details = {};
+          this.publishCustomEvent(this.customEventData);
+
           this.customEventData.await = true;
           this.customEventData.awaitDetail = () => {
             return this.componentMap["home-form"]();

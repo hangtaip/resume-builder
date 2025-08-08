@@ -12,6 +12,9 @@ export default class FormSkills extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
+    this.isReadyPromise = new Promise(resolve => {
+      this.resolveReady = resolve;
+    });
     this.listener;
     this.customEventData = {
       await: false,
@@ -26,7 +29,9 @@ export default class FormSkills extends HTMLElement {
   }
 
   connectedCallback() {
-    this.render();
+    this.render().then(() => {
+      this.resolveReady();
+    });
     this.setValueRequestDetail();
     this.publishCustomEvent(this.customEventData);
     this.styling();
@@ -38,7 +43,7 @@ export default class FormSkills extends HTMLElement {
     this.unsubscribe();
   }
 
-  render() {
+  async render() {
     const dom = `
          <div class="container">
           <fieldset>
@@ -52,6 +57,8 @@ export default class FormSkills extends HTMLElement {
          `;
 
     this.shadowRoot.innerHTML = DOMPurify.sanitize(dom);
+    
+    await new Promise(resolve => requestAnimationFrame(() => resolve()));
   }
 
   styling() {

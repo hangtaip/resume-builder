@@ -13,6 +13,9 @@ export default class FormPersonal extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
     this.state = new Map();
+    this.isReadyPromise = new Promise((resolve) => {
+      this.resolveReady = resolve;
+    });
     this.listener;
     this.customEventData = {
       await: false,
@@ -27,7 +30,9 @@ export default class FormPersonal extends HTMLElement {
   }
 
   async connectedCallback() {
-    await this.render();
+    this.render().then(() => {
+      this.resolveReady();
+    });
     this.setValueRequestDetail();
     this.publishCustomEvent(this.customEventData);
     this.styling();
@@ -51,7 +56,8 @@ export default class FormPersonal extends HTMLElement {
          `;
 
     this.shadowRoot.innerHTML = DOMPurify.sanitize(dom);
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    // await new Promise((resolve) => setTimeout(resolve, 0));
+    await new Promise((resolve) => requestAnimationFrame(() => resolve()));
   }
 
   customInput() {
