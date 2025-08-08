@@ -249,34 +249,34 @@ export default class FormExperiences extends HTMLElement {
     }
   }
 
-  testDataInsert() {
-    let inputs = "";
-    const existingInputs = this.shadowRoot.querySelectorAll(".container.list");
-    Object.values(yaml.owner.exp).forEach((exp, i) => {
-      // inputs += this.customInput(`["${skill.name}","${skill.color}"]`);
-      if (existingInputs[i]) {
-        return Object.keys(exp).map((key) => {
-          if (this.shadowRoot.querySelector(`input[data-attr="${key}"]`)) {
-            this.shadowRoot.querySelector(`input[data-attr="${key}"`).value =
-              exp[key];
-          }
-
-          if (key == "desc") {
-            this.shadowRoot.querySelector("custom-textarea").dataset.values =
-              JSON.stringify(exp[key]);
-          }
-        });
-      }
-      inputs += this.customInput(exp);
-    });
-    const input = new DOMParser().parseFromString(inputs, "text/html");
-    const fragments = new DocumentFragment();
-    while (input.body.firstChild) {
-      fragments.append(input.body.firstChild);
-    }
-
-    this.shadowRoot.querySelector(".view").append(fragments);
-  }
+  // testDataInsert() {
+  //   let inputs = "";
+  //   const existingInputs = this.shadowRoot.querySelectorAll(".container.list");
+  //   Object.values(yaml.owner.exp).forEach((exp, i) => {
+  //     // inputs += this.customInput(`["${skill.name}","${skill.color}"]`);
+  //     if (existingInputs[i]) {
+  //       return Object.keys(exp).map((key) => {
+  //         if (this.shadowRoot.querySelector(`input[data-attr="${key}"]`)) {
+  //           this.shadowRoot.querySelector(`input[data-attr="${key}"`).value =
+  //             exp[key];
+  //         }
+  //
+  //         if (key == "desc") {
+  //           this.shadowRoot.querySelector("custom-textarea").dataset.values =
+  //             JSON.stringify(exp[key]);
+  //         }
+  //       });
+  //     }
+  //     inputs += this.customInput(exp);
+  //   });
+  //   const input = new DOMParser().parseFromString(inputs, "text/html");
+  //   const fragments = new DocumentFragment();
+  //   while (input.body.firstChild) {
+  //     fragments.append(input.body.firstChild);
+  //   }
+  //
+  //   this.shadowRoot.querySelector(".view").append(fragments);
+  // }
 
   customInput(data = "") {
     const xMark = icon(faRectangleXmark, {

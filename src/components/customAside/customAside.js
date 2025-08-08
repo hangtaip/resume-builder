@@ -395,7 +395,7 @@ export default class CustomAside extends HTMLElement {
             target = customInput.shadowRoot.querySelector("input");
             this.formValues.set(target.dataset.attr, customInput);
           });
-        } else if (key == "form-education") {
+        } else if (key == "form-educations") {
           if (
             this.formValues.get("edu")?.length == undefined ||
             event.detail[key].length > this.formValues.get("edu")?.length
@@ -441,7 +441,7 @@ export default class CustomAside extends HTMLElement {
               ]);
             });
           }
-        } else if (key == "form-experience") {
+        } else if (key == "form-experiences") {
           if (
             this.formValues.get("exp")?.length == undefined ||
             event.detail[key].length > this.formValues.get("exp")?.length
