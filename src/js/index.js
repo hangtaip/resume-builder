@@ -17,14 +17,17 @@
 // import "../components/previewResume/previewResume.js";
 // import "../components/loadingScreen/loadingScreen.js";
 // import "../components/loadingBlock/loadingBlock.js";
-import "../pages/home/home.js";
+// import "../pages/home/home.js";
+// import "../pages/tests/tests.js";
 // import "../pages/home/resume_default/resume_default.js";
 // import "../pages/home/resume_classic/resume_classic.js";
 import "../css/index.scss";
 import { registry } from "./functionRegistry.js";
+import router from "./router.js";
 
 window.appRegistry = registry;
 
-const home = document.createElement("resume-home");
+// const home = document.createElement("resume-home");
+// document.body.appendChild(home);
 
-document.body.appendChild(home);
+router.init();

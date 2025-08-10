@@ -30,11 +30,11 @@ export default class Home extends HTMLElement {
         tagName: "preview-resume",
         folderType: "components",
       },
-      {
-        path: "home/resume_default/resume_default.js",
-        tagName: "resume-default",
-        folderType: "pages",
-      }, 
+      // {
+      //   path: "home/resume_default/resume_default.js",
+      //   tagName: "resume-default",
+      //   folderType: "pages",
+      // }, 
       {
         path: "loadingScreen/loadingScreen.js",
         tagName: "loading-screen",

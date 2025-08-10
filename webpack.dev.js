@@ -6,6 +6,7 @@ module.exports = merge(common, {
   devServer: {
     compress: true,
     hot: true,
+    historyApiFallback: true,
   },
   mode: "development",
   module: {

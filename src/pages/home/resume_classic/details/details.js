@@ -16,7 +16,7 @@ import { faGithub, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import eventManager from "../../../../js/eventManager.js";
 import objectRegistry from "../../../../js/objectRegistry.js";
 
-export default class UserDetails extends HTMLElement {
+export default class UserDetailsClassic extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -143,7 +143,7 @@ export default class UserDetails extends HTMLElement {
     // sheet.replaceSync(styles.toString());
     // styles.use({ target: this.shadowRoot });
     // const style = await import(`./details-${this.dataset.templateStyle}.shadow.scss`);
-    sheet.replaceSync(styles);
+    sheet.replaceSync(styles.toString());
     this.shadowRoot.adoptedStyleSheets = [sheet];
   }
 
@@ -283,4 +283,4 @@ export default class UserDetails extends HTMLElement {
 }
 
 //customElements.define('user-details', UserDetails);
-registerCustomElement("user-details", UserDetails);
+registerCustomElement("user-details-classic", UserDetailsClassic);

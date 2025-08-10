@@ -3,19 +3,32 @@
 $style-font: "Courier", "monospace";
 .container {
   @include base.container($bg-c: hsla(0, 0%, 0%, 0));
-  width: 100%;
+  width: fit-content;
   font-family: $style-font;
+
+  display: flex;
+  flex-flow: row wrap;
+  transition: all 0.1s linear;
 
   > .body {
     display: flex;
+    flex: 1 100%;
     flex-flow: row wrap;
     justify-content: flex-start;
     align-items: center;
+    gap: 10px;
+    padding: 0.5rem;
+
+    > .badge {
+      border-radius: 0.25rem;
+    }
   }
 
   > .header {
+    height: min-content;
     display: flex;
-    align-items: center;
+    flex: 1 100%;
+    align-items: flex-start;
     gap: 0.25rem;
     text-transform: uppercase;
   }
@@ -25,22 +38,15 @@ $style-font: "Courier", "monospace";
     align-items: center;
     gap: 10px;
 
-    &.field {
-      font-weight: 800;
-      color: hsla(0, 0%, 0%, 1);
-    }
-
-    &.uni {
-    }
-
-    .body {
-      padding: 0.5rem 0.5rem 0 0.5rem;
-      font-size: 1.5ch;
+    > .body {
+      background-color: hsla(0, 0%, 80%, 1);
+      padding: 0.5rem;
+      border-radius: 0.25rem;
     }
   }
 
   /* ---pic--- */
-  .fa-user-graduate {
+  .fa-code {
     height: 20px;
     width: 20px;
     background-color: hsla(0, 0%, 90%, 1);
@@ -48,6 +54,11 @@ $style-font: "Courier", "monospace";
     padding: 0.3rem;
   }
   /* ---pic--- */
+
+  @media screen and (max-width: 800px) {
+    padding: 0 0 0.5rem 0;
+    // border-bottom: 1px solid hsla(0, 0%, 0%, 0.2);
+  }
 
   @media print {
     h3 {

@@ -10,7 +10,7 @@ import eventManager from "../../../../js/eventManager.js";
 import { isNullUndefinedOrEmpty } from "../../../../js/helper.js";
 import objectRegistry from "../../../../js/objectRegistry.js";
 
-export default class UserSkills extends HTMLElement {
+export default class UserSkillsClassic extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -284,4 +284,4 @@ export default class UserSkills extends HTMLElement {
   // } 
 }
 
-registerCustomElement("user-skills", UserSkills);
+registerCustomElement("user-skills-classic", UserSkillsClassic);
