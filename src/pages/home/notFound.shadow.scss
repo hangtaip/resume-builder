@@ -1,0 +1,24 @@
+@use "../../css/base";
+
+.container {
+  @include base.container($bg-c: hsla(0, 0%, 0%, 0));
+
+  .not-found-container {
+    padding: 24px;
+    background-color: #fef2f2;
+    border-radius: 8px;
+    color: #991b1b;
+    text-align: center;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+}
