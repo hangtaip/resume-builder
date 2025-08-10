@@ -50,6 +50,7 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         { from: "src/assets", to: "assets" },
+        { from: "src/tests", to: "tests" },
         // { from: `${path.resolve(__dirname, "src")}/favicon.ico`, to: 'favicon.ico' },
         //{ from: 'node_modules/@fortawesome', to: 'assets/@fortawesome' },
       ],

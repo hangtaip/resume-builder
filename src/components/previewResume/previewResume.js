@@ -127,6 +127,8 @@ export default class PreviewResume extends HTMLElement {
     if (isDOM) {
       const elem = this.shadowRoot.querySelector("article");
       const page = document.createElement(`resume-${event.detail.resumeStyle}`);
+      // const page = document.createElement("resume-default");
+      page.dataset.templateStyle = event.detail.resumeStyle;
       // const newElem = elem.cloneNode(true);
       const newElem = document.createElement("article");
       newElem.classList.add("printable");

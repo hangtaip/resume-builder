@@ -13,7 +13,6 @@ import selectIcon from "../../assets/imgs/icons/done_outline.svg?raw";
 import browseIcon from "../../assets/imgs/icons/browse.svg?raw";
 import buildIcon from "../../assets/imgs/icons/build.svg?raw";
 import imgNotAvailable from "../../assets/imgs/img_not_available.svg";
-import templateResumeDefault from "../../pages/home/resume_default/sample.png";
 import yaml from "js-yaml";
 import eventManager from "../../js/eventManager.js";
 import dataBase from "../../data/data-base.yaml";
@@ -45,10 +44,12 @@ export default class CustomAside extends HTMLElement {
     this.formValues = new Map();
     this.componentMap = {
       "home-form": () => import("../../components/homeForm/homeForm.js"),
-      "template-default": () =>
-        import("../../pages/home/resume_default/resume_default.js"),
-      "template-classic": () =>
-        import("../../pages/home/resume_classic/resume_classic.js"),
+      // "template-default": () =>
+      //   import("../../pages/home/resume_default/resume_default.js"),
+      // "template-classic": () =>
+      //   import("../../pages/home/resume_classic/resume_classic.js"),
+      "getTemplate": (template) =>
+        import(`../../pages/home/resume_${template}/resume_${template}.js`),
     };
     this.dataContainerClass = JSON.parse(this.dataset.containerClass || "{}");
     library.add([faFileArrowUp, faFileArrowDown, faXmark]);
@@ -268,6 +269,11 @@ export default class CustomAside extends HTMLElement {
           break;
         case elem.classList.contains("template-item-btn"):
           data = this.collectForm();
+
+          if (!customElements.get(`resume-${elem.dataset.attr}`)) {
+            await this.componentMap["getTemplate"](elem.dataset.attr);
+          };
+          // this.templateLoaded.push
           // if (elem.classList.contains("selected")) return;
 
           // TODO: create global store to store click node -> check there and remove
@@ -280,12 +286,6 @@ export default class CustomAside extends HTMLElement {
 
           elem.classList.add("selected");
           this.shadowRoot.querySelector(".tooltip").hidePopover(); 
-
-          // loading
-          let state = new Map();
-          state.set("formCnt", 4);
-          state.set("readyCnt", 0);
-          objectRegistry.set("formLoaded", state);
 
           this.customEventData.await = false;
           this.customEventData.awaitDetail = () => {

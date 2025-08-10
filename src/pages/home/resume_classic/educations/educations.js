@@ -8,7 +8,7 @@ import { faUserGraduate } from "@fortawesome/free-solid-svg-icons";
 import eventManager from "../../../../js/eventManager.js";
 import objectRegistry from "../../../../js/objectRegistry.js";
 
-export default class UserEducations extends HTMLElement {
+export default class UserEducationsClassic extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -206,4 +206,4 @@ export default class UserEducations extends HTMLElement {
   // }  
 }
 
-registerCustomElement("user-educations", UserEducations);
+registerCustomElement("user-educations-classic", UserEducationsClassic);

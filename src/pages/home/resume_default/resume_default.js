@@ -165,11 +165,13 @@ export default class ResumeDefault extends HTMLElement {
     await new Promise(resolve => requestAnimationFrame(() => resolve()));
   }
 
-  styling() {
+  async styling() {
     const sheet = new CSSStyleSheet();
     //const cssModule = import('./details.shadow.scss');
-    sheet.replaceSync(styles.toString());
+    // const styles = await import(`./resume_${this.dataset.templateStyle}.shadow.scss`);
+    // sheet.replaceSync(styles.default.toString());
     // styles.use({ target: this.shadowRoot });
+    sheet.replaceSync(styles.toString());
     this.shadowRoot.adoptedStyleSheets = [sheet];
   }
 

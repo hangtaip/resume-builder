@@ -10,7 +10,7 @@ import TraceDom from "../../../../js/traceDom.js";
 import eventManager from "../../../../js/eventManager.js";
 import objectRegistry from "../../../../js/objectRegistry.js";
 
-export default class UserExperiences extends HTMLElement {
+export default class UserExperiencesClassic extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -182,4 +182,4 @@ export default class UserExperiences extends HTMLElement {
 }
 
 //customElements.define('user-experiences', UserExperiences);
-registerCustomElement("user-experiences", UserExperiences);
+registerCustomElement("user-experiences-classic", UserExperiencesClassic);
