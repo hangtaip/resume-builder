@@ -74,6 +74,6 @@ module.exports = merge(common, {
       filename: "css/[name].[contenthash].bundle.css",
       chunkFilename: "css/[name].[contenthash].chunk.css",
     }),
-    new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
   ],
 });
