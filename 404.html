@@ -1,0 +1,10 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My App</title><script>(function () {
+            var path = window.location.pathname;
+            // The path must not be the root and must not be a file (e.g., `style.css`)
+            if (path !== '/' && path.indexOf('.') === -1) {
+               // Store the full path in session storage.
+               sessionStorage.setItem('redirect', path);
+               // Redirect to the app root.
+               window.location.replace(window.location.origin);
+            }
+         })();</script><script defer="defer" src="./runtime.03fd5d730fce6c3484a8.bundle.js"></script><script defer="defer" src="./8404.4974271b122698a3aa4c.bundle.js"></script><script defer="defer" src="./app.c838c11ee1e279185713.bundle.js"></script><link href="./css/app.3496e7413dca7b910258.bundle.css" rel="stylesheet"></head><body><div id="app-container"></div></body></html>
