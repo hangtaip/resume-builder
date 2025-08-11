@@ -41,7 +41,7 @@ NIX_ENFORCE_NO_NATIVE='1'
 export NIX_ENFORCE_NO_NATIVE
 NIX_HARDENING_ENABLE='bindnow format fortify fortify3 pic relro stackprotector strictoverflow zerocallusedregs'
 export NIX_HARDENING_ENABLE
-NIX_LDFLAGS='-rpath /mnt/wsl/PHYSICALDRIVE0p1/farid/projects/resume/outputs/out/lib '
+NIX_LDFLAGS='-rpath /mnt/wsl/PHYSICALDRIVE0p1/farid/projects/resume-builder/outputs/out/lib '
 export NIX_LDFLAGS
 NIX_NO_SELF_RPATH='1'
 NIX_STORE='/nix/store'
@@ -136,7 +136,7 @@ name='nix-shell-env'
 export name
 nativeBuildInputs='/nix/store/9i106xvqiljjgv0kl3pykgc3izswja8j-node2nix-1.11.0 /nix/store/i1jdnip70qb7yh4krlzsgyxs0zdvw7xv-nodejs-22.13.1 /nix/store/ihlqmjc0687gh6y5j3rm0li00xii5gk0-pnpm-10.4.0 /nix/store/7rq9j3ggh28nkszpssdsfaa85ixm1bk7-yarn-1.22.22'
 export nativeBuildInputs
-out='/mnt/wsl/PHYSICALDRIVE0p1/farid/projects/resume/outputs/out'
+out='/mnt/wsl/PHYSICALDRIVE0p1/farid/projects/resume-builder/outputs/out'
 export out
 outputBin='out'
 outputDev='out'
@@ -167,7 +167,7 @@ preConfigurePhases=' updateAutotoolsGnuConfigScriptsPhase'
 declare -a preFixupHooks=('_moveToShare' '_multioutDocs' '_multioutDevs' )
 preferLocalBuild='1'
 export preferLocalBuild
-prefix='/mnt/wsl/PHYSICALDRIVE0p1/farid/projects/resume/outputs/out'
+prefix='/mnt/wsl/PHYSICALDRIVE0p1/farid/projects/resume-builder/outputs/out'
 declare -a propagatedBuildDepFiles=('propagated-build-build-deps' 'propagated-native-build-inputs' 'propagated-build-target-deps' )
 propagatedBuildInputs=''
 export propagatedBuildInputs

@@ -45,12 +45,22 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: "Resume Builder",
+      filename: "index.html",
+      template: "./src/public/index.html",
+      is404: false,
+      favicon: `${path.resolve(__dirname, "src")}/favicon.ico`, 
+    }),
+    new HtmlWebpackPlugin({
+      title: "Resume Builder",
+      filename: "404.html",
+      template: "./src/public/index.html",
+      is404: true,
       // favicon: `${path.resolve(__dirname, "src")}/favicon.ico`, 
     }),
     new CopyPlugin({
       patterns: [
         { from: "src/assets", to: "assets" },
-        { from: "src/tests", to: "tests" },
+        // { from: "src/tests", to: "tests" },
         // { from: `${path.resolve(__dirname, "src")}/favicon.ico`, to: 'favicon.ico' },
         //{ from: 'node_modules/@fortawesome', to: 'assets/@fortawesome' },
       ],

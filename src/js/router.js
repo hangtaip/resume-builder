@@ -1,11 +1,13 @@
 import Listener from '../js/listener.js';
+import { defaults } from './defaults.js';
 
 class Router {
   constructor() {
     console.log(`${this.constructor.name}: loaded`);
     this.dir = "pages";
     this.routes = {};
-    this.listener;
+    this.basePath = document.querySelector("base")?.getAttribute("href") || "/";
+    this.listeners;
     this.context = {
       pages: require.context('../pages', true, /\.\/([^\/]+)\/\1\.js$/),
     };
@@ -29,9 +31,14 @@ class Router {
       return match ? match[1] : null;
     }).filter(name => name !== null);
 
+    let currentPath = "";
+    if (window.location.host.includes("github")) {
+      currentPath += `${defaults.projectName}/`;
+    }
+
     this.routes = folderNames.map(name => {
       return {
-        path: `/${name == "home" ? "" : name}`,
+        path: `/${currentPath}${name == "home" ? "" : name}`,
         component: `resume-${name}`,
         folder: name,
         file: name, 
@@ -47,9 +54,32 @@ class Router {
     document.addEventListener("DOMContentLoaded", this.listeners);
   }
 
+  handleDOMContentLoaded(event, delegated) {
+    const isDOM = delegated instanceof Listener;
+
+    if (isDOM) {
+      const redirectPath = sessionStorage.getItem("redirect");
+
+      if (redirectPath) {
+        sessionStorage.removeItem("redirect");
+        thin.navigate(redirectPath);
+      } else {
+        this.render();
+      }
+    } else {
+      console.log("external");
+    }
+  }
+
+  handlePopstate(event, delegated) {
+    console.log(event);
+  }
+
   render() {
-    const path = window.location.pathname;
-    const route = this.routes.find(r => r.path === path);
+    const currentPath = window.location.pathname;
+    const relativePath = currentPath.startsWith(this.basePath) ? currentPath.substring(this.basePath.length - 1) : currentPath;
+     
+    const route = this.routes.find(r => r.path === relativePath);
     let page;
 
     this.container.innerHTML = ""; 
@@ -77,20 +107,6 @@ class Router {
         `../pages/${route.folder}/${route.file}.js`
       )
     }
-  }
-
-  handleDOMContentLoaded(event, delegated) {
-    const isDOM = delegated instanceof Listener;
-
-    if (isDOM) {
-      this.render();
-    } else {
-      console.log("external");
-    }
-  }
-
-  handlePopstate(event, delegated) {
-    console.log(event);
   } 
 
   // setupEventListeners(obj, dom) {
