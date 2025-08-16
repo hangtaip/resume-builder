@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkresume_builder=self.webpackChunkresume_builder||[]).push([[2374],{2374:(e,s,u)=>{e.exports=u.p+"701a0d4c2e1856ed615f.png"}}]);
