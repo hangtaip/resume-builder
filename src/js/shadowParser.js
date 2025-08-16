@@ -258,6 +258,11 @@ export default class ShadowParser {
       return "";
     }
 
+    if (trimmedCss.startsWith(":host")) {
+      const hostCss = trimmedCss.split(":host")[1];  
+      return `${elementSelector} ${hostCss}`;
+    }
+
     const [selectorsPart, rulesPart] = cssText.split(/\s*{\s*/);
 
     const selectors = selectorsPart.split(/\s*,\s*/)

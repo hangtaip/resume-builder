@@ -4,4 +4,7 @@ dist/
 
 temp.html
 src/data/data.yaml.hangtaip
+src/data/data-example-with-pp.yaml
+*:Zone.identifier
+
 note

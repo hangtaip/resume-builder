@@ -1,9 +1,16 @@
 @use "../../../../css/base";
 
-$style-font: "Courier", "monospace";
+$style-font: "Roboto", "sans";
+$font-size-header: 3ch;
+
+:host {
+  height: 100%;
+  width: 100%;
+}
+
 .container {
   @include base.container($bg-c: hsla(0, 0%, 0%, 0));
-  width: fit-content;
+  width: 100%;
   font-family: $style-font;
 
   display: flex;
@@ -14,10 +21,10 @@ $style-font: "Courier", "monospace";
     display: flex;
     flex: 1 100%;
     flex-flow: row wrap;
-    justify-content: flex-start;
+    justify-content: space-evenly;
     align-items: center;
     gap: 10px;
-    padding: 0.5rem;
+    padding: 0.5rem 0.5rem 0 0.5rem;
 
     > .badge {
       border-radius: 0.25rem;
@@ -28,9 +35,12 @@ $style-font: "Courier", "monospace";
     height: min-content;
     display: flex;
     flex: 1 100%;
+    justify-content: center;
     align-items: flex-start;
     gap: 0.25rem;
-    text-transform: uppercase;
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+    font-size: $font-size-header;
   }
 
   .card {
@@ -58,11 +68,5 @@ $style-font: "Courier", "monospace";
   @media screen and (max-width: 800px) {
     padding: 0 0 0.5rem 0;
     // border-bottom: 1px solid hsla(0, 0%, 0%, 0.2);
-  }
-
-  @media print {
-    h3 {
-      margin-block-end: 0.5em;
-    }
   }
 }

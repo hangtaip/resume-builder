@@ -42,3 +42,15 @@ export function loadComponent(list) {
 
   return promises;
 }
+
+export function isTextSingleLine(target) {
+    const objStyle = window.getComputedStyle(target);
+    const objHeight = target.offsetHeight;
+    const tolerance = 2;
+    
+    if (Math.abs(objHeight - parseFloat(objStyle.lineHeight)) >= tolerance) {
+      return false;
+    }
+
+    return true;
+  }

@@ -67,8 +67,8 @@ export default class HomeForm extends HTMLElement {
       customElements.get("custom-textarea"),
       customElements.get("form-personal"),
       customElements.get("form-skills"),
-      customElements.get("form-education"),
-      customElements.get("form-experience"),
+      customElements.get("form-educations"),
+      customElements.get("form-experiences"),
     ];
 
     const validSubComponents = subComponents.filter(

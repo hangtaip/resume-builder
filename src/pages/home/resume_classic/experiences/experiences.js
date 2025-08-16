@@ -69,7 +69,6 @@ export default class UserExperiencesClassic extends HTMLElement {
     const dom = `
         <div class="container">
           <h3 class="header">
-            ${i.node[0].outerHTML}
             <span class="title">Experiences</span>
           </h3>
         </div>
@@ -104,9 +103,13 @@ export default class UserExperiencesClassic extends HTMLElement {
         return `
           <div class="card">
             <div class="header">
-              <span class="pos">${exp.pos}</span>
-              <span class="org">${exp.org}</span>
-              ${tl}  
+              <div class="box">
+                <span class="pos">${exp.pos}</span>
+              </div>
+              <div class="box text-right">
+                <span class="org">${exp.org}</span>
+                ${tl}
+              </div>
             </div>
             <div class="body">
               <ul>
