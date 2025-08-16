@@ -20,6 +20,7 @@ export default class DelegatedListener{
 
   handleEvent(event) {
     const eventType = `${event.type.slice(0,1).toUpperCase()}${event.type.slice(1)}`;
+    
     this.delegated[`handle${eventType}`](event, this);
   }
 }

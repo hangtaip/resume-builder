@@ -40,6 +40,7 @@ export default class FormSkills extends HTMLElement {
   }
 
   disconnectedCallback() {
+    this.abortEventListener();
     this.unsubscribe();
   }
 
@@ -77,6 +78,11 @@ export default class FormSkills extends HTMLElement {
       "importDataLoaded",
       this.listener,
     );
+  }
+
+  abortEventListener() {
+    this.shadowRoot.removeEventListener("click", this.listener);
+    this.shadowRoot.removeEventListener("transitionend", this.listener);
   }
 
   handleClick(event, delegated) {

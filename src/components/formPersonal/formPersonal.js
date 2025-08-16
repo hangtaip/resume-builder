@@ -40,6 +40,7 @@ export default class FormPersonal extends HTMLElement {
   }
 
   disconnectedCallback() {
+   this.abortEventListener();
     this.unsubscribe();
   }
 
@@ -211,6 +212,10 @@ export default class FormPersonal extends HTMLElement {
       "importDataLoaded",
       this.listener,
     );
+  }
+
+  abortEventListener() {
+    this.shadowRoot.removeEventListener("click", this.listener);
   }
 
   handleClick(event, delegated) {

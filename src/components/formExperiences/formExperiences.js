@@ -41,6 +41,7 @@ export default class FormExperiences extends HTMLElement {
   }
 
   disconnectedCallback() {
+    this.abortEventListener();
     this.unsubscribe();
   }
 
@@ -104,6 +105,11 @@ export default class FormExperiences extends HTMLElement {
       "importDataLoaded",
       this.listener,
     );
+  }
+
+  abortEventListener() {
+    this.shadowRoot.removeEventListener("click", this.listener);
+    this.shadowRoot.removeEventListener("transitionend", this.listener);
   }
 
   handleClick(event, delegated) {

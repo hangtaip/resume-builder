@@ -74,6 +74,7 @@ export default class CustomAside extends HTMLElement {
   } 
 
   disconnectedCallback() {
+    this.abortEventListener();
     this.unsubscribe();
   }
 
@@ -155,7 +156,6 @@ export default class CustomAside extends HTMLElement {
   setupEventListener() {
     this.listener = new Listener(this);
     this.listener.setDelegates(this); 
-    this.shadowRoot.addEventListener("transitionstart", this.listener);
     this.subscribe = eventManager.subscribe(["valueRequest", "resumeRendered"], this.listener);
   }
 
@@ -164,7 +164,16 @@ export default class CustomAside extends HTMLElement {
     this.shadowRoot.addEventListener("change", this.listener);
     this.shadowRoot.addEventListener("pointerover", this.listener);
     this.shadowRoot.addEventListener("pointerout", this.listener);
+    this.shadowRoot.addEventListener("transitionstart", this.listener);
     this.shadowRoot.querySelector(".template-list-buttons").addEventListener("scroll", this.listener);
+  }
+
+  abortEventListener() {
+    this.shadowRoot.removeEventListener("click", this.listener);
+    this.shadowRoot.removeEventListener("change", this.listener);
+    this.shadowRoot.removeEventListener("pointerover", this.listener);
+    this.shadowRoot.removeEventListener("pointerout", this.listener);
+    this.shadowRoot.removeEventListener("transitionstart", this.listener);
   }
 
   async handleClick(event, delegated) {

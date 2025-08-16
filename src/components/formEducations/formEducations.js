@@ -39,6 +39,7 @@ export default class FormEducations extends HTMLElement {
 
   disconnectedCallback() {
     this.unsubscribe();
+    this.abortEventListener();
   }
 
   async render() {
@@ -76,6 +77,11 @@ export default class FormEducations extends HTMLElement {
       "importDataLoaded",
       this.listener,
     );
+  }
+
+  abortEventListener() {
+    this.shadowRoot.removeEventListener("click", this.listener);
+    this.shadowRoot.removeEventListener("transitionend", this.listener);
   }
 
   handleClick(event, delegated) {

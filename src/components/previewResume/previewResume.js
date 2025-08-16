@@ -33,6 +33,7 @@ export default class PreviewResume extends HTMLElement {
   }
 
   disconnectedCallback() {
+    this.abortEventListener();
     this.unsubscribe();
   }
 
@@ -77,6 +78,11 @@ export default class PreviewResume extends HTMLElement {
     this.shadowRoot.querySelector("dialog").addEventListener("close", this.listener);
     this.subscribe = eventManager.subscribe(["appendResume", "showPreview", "printResume", "previewVisible"] , this.listener);
   }
+
+  abortEventListener() {
+    this.shadowRoot.removeEventListener("click", this.listener);
+    this.shadowRoot.removeEventListener("change", this.listener);
+  };
 
   handleClick(event, delegated) {
     const isDOM = delegated instanceof Listener;

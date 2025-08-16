@@ -125,6 +125,10 @@ export default class Home extends HTMLElement {
     this.unsubscribe = eventManager.subscribe("homeFormLoaded", this.listener);
   }
 
+  abortGenericEventListener() {
+    this.shadowRoot.removeEventListener("transitionend", this.listener);
+  }
+
   handleHomeFormLoaded(event, delegated) {
     const isDOM = delegated instanceof Listener;
 
