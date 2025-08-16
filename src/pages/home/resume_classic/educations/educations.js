@@ -6,7 +6,6 @@ import styles from "./educations.shadow.scss";
 import { icon, library } from "@fortawesome/fontawesome-svg-core";
 import { faUserGraduate } from "@fortawesome/free-solid-svg-icons";
 import eventManager from "../../../../js/eventManager.js";
-import objectRegistry from "../../../../js/objectRegistry.js";
 
 export default class UserEducationsClassic extends HTMLElement {
   constructor() {
@@ -62,7 +61,6 @@ export default class UserEducationsClassic extends HTMLElement {
     const dom = `
       <div class="container">
         <h3 class="header">
-          ${i.node[0].outerHTML}
           <span class="title">Education</span>
         </h3> 
       </div>
@@ -132,7 +130,7 @@ export default class UserEducationsClassic extends HTMLElement {
     // const style = await import(`./educations-${this.styleType}.shadow.scss`);
     sheet.replaceSync(styles.toString());
     this.shadowRoot.adoptedStyleSheets = [sheet];
-  }
+  } 
 
   async handleFillResumeComponent(event, delegated) {
     const isDOM = delegated instanceof Listener;

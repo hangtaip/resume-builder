@@ -14,16 +14,16 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import eventManager from "../../../../js/eventManager.js";
-import objectRegistry from "../../../../js/objectRegistry.js";
+import { isTextSingleLine } from "../../../../js/helper.js";
 
 export default class UserDetailsClassic extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
-    this.isReadyPromise = new Promise(resolve => {
+    this.isReadyPromise = new Promise((resolve) => {
       this.resolveReady = resolve;
     });
-    this.formRequestPromise = new Promise(resolve => {
+    this.formRequestPromise = new Promise((resolve) => {
       this.resolveFormRequestReady = resolve;
     });
     this.listener;
@@ -36,7 +36,7 @@ export default class UserDetailsClassic extends HTMLElement {
       faHouseUser,
       faUser,
       faWhatsapp,
-    ); 
+    );
   }
 
   connectedCallback() {
@@ -66,54 +66,41 @@ export default class UserDetailsClassic extends HTMLElement {
 
     const dom = `
       <div class="container">
-        <div class="pic">
-          <user-pic></user-pic>
-        </div>
         <div class="info">
-          <div class="attr">
+          <div class="attr box-name">
             <div class="field">
-              ${user.node[0].outerHTML}
               <span class="data" data-attr="name"></span>
             </div>
           </div>
-          <div class="attr">
-            <div class="field">
-              ${calendar.node[0].outerHTML}
-              <span class="data" data-attr="yob"></span>
+          <div class="attrs box-info-additional">
+            <div class="card">
+              <div class="attr">
+                <div class="field">
+                  <span class="data" data-attr="location"></span>
+                </div>
+              </div>
+              <div class="attr box-contact">
+                <div class="field">
+                  <span class="data" data-attr="contact"></span>
+                </div>
+              </div>
+              <div class="attr">
+                <div class="field">
+                  <span class="data" data-attr="email"></span>
+                </div>
+              </div>
+              <div class="attr">
+                <div class="field">
+                  <span class="data" data-attr="github"></span>
+                </div>
+              </div>  
             </div>
-          </div>
-          <div class="attr">
-            <div class="field">
-              ${whatsapp.node[0].outerHTML}
-              <span class="data" data-attr="contact"></span>
-            </div>
-          </div>
-          <div class="attr">
-            <div class="field">
-              ${mail.node[0].outerHTML}
-              <span class="data" data-attr="email"></span>
-            </div>
-          </div>
-          <div class="attr">
-            <div class="field">
-              ${github.node[0].outerHTML}
-              <span class="data" data-attr="github"></span>
-            </div>
-          </div>
-          <div class="attr">
-            <div class="field">
-              ${house.node[0].outerHTML}
-              <span class="data" data-attr="location"></span>
-            </div>
-          </div>
-          <div class="attr">
-            <div class="field">
-              ${rezeki.node[0].outerHTML}
-              <span class="data" data-attr="seek"></span>
-            </div>
-          </div>
+          </div> 
         </div>
         <div class="motto">
+          <h3 class="header">
+            <span>Objective</span>
+          </h3>
           <div class="field">
             <p class="data" data-attr="motto"></p>
           </div>
@@ -124,16 +111,16 @@ export default class UserDetailsClassic extends HTMLElement {
     this.shadowRoot.innerHTML = DOMPurify.sanitize(dom);
 
     const images = this.shadowRoot.querySelectorAll("img");
-    const imagePromises = Array.from(images).map(img => {
+    const imagePromises = Array.from(images).map((img) => {
       if (img.complete) return Promise.resolve();
-      return new Promise(resolve => { 
-        img.onload = resolve; 
-        img.onerror = resolve; 
+      return new Promise((resolve) => {
+        img.onload = resolve;
+        img.onerror = resolve;
       });
     });
 
     await Promise.all(imagePromises);
-    await new Promise(resolve => requestAnimationFrame(() => resolve()));
+    await new Promise((resolve) => requestAnimationFrame(() => resolve()));
   }
 
   async styling() {
@@ -150,7 +137,10 @@ export default class UserDetailsClassic extends HTMLElement {
   setupEventListener() {
     this.listener = new Listener(this);
     this.listener.setDelegates(this);
-    this.unsubscribe = eventManager.subscribe("fillResumeComponent", this.listener);
+    this.unsubscribe = eventManager.subscribe(
+      "fillResumeComponent",
+      this.listener,
+    );
   }
 
   async handleFillResumeComponent(event, delegated) {
@@ -159,31 +149,49 @@ export default class UserDetailsClassic extends HTMLElement {
     if (isDOM) {
       // console.log(event.detail.data.owner);
       const blob = event.detail.data.owner.image;
-      blob.text().then(src => {
-        const data = JSON.parse(src).data
+      blob?.text().then((src) => {
+        const data = JSON.parse(src).data;
         if (data && data.includes("https://placehold.co/600x400")) {
-          this.shadowRoot.querySelector(".container").classList.add("no-pic"); 
+          this.shadowRoot.querySelector(".container").classList.add("no-pic");
         } else {
-          this.shadowRoot.querySelector(".container").classList.remove("no-pic"); 
+          this.shadowRoot
+            .querySelector(".container")
+            .classList.remove("no-pic");
         }
       });
-      this.shadowRoot.querySelectorAll(".field").forEach(node => { 
-        node.querySelector(".data").textContent = event.detail.data.owner[node.querySelector(".data").dataset.attr];
+      this.shadowRoot.querySelectorAll(".field").forEach((node) => {
+        node.querySelector(".data").textContent =
+          event.detail.data.owner[node.querySelector(".data").dataset.attr];
+
+        // if (node.querySelector(".data").dataset.attr == "motto") {
+        //   node.querySelector(".data").textContent = "Advocating for justice, one case at a time. Advocating for justice, one case at a time. Advocating for justice, one case at a time. Advocating for justice, one case at a time. Advocating for justice, one case at a time. Advocating for justice, one case at a time. Advocating for justice, one case at a time."; 
+        // }
       });
 
-      this.shadowRoot.querySelector(`.field [data-attr="contact"]`).textContent = `${this.getCC(event.detail.data.owner.country_code)} ${event.detail.data.owner.tel}`;
+      this.shadowRoot.querySelector(
+        `.field [data-attr="contact"]`,
+      ).textContent =
+        `${this.getCC(event.detail.data.owner.country_code)} ${event.detail.data.owner.tel}`;
 
       if (Object.values(event.detail.data.owner.skills).length > 9) {
-        this.shadowRoot.querySelector(".container").classList.add("all-fullWidth");
+        this.shadowRoot
+          .querySelector(".container")
+          .classList.add("all-fullWidth");
       }
 
-      await new Promise(resolve => requestAnimationFrame(() => resolve())).then(() => {
+      const objDiv = this.shadowRoot.querySelector(".motto .data");
+      const objTextSingleLine = isTextSingleLine(objDiv);
+      !objTextSingleLine && objDiv.classList.add("multiline");
+
+      await new Promise((resolve) =>
+        requestAnimationFrame(() => resolve()),
+      ).then(() => {
         this.resolveFormRequestReady();
       });
     } else {
       console.log("external");
-    } 
-  }
+    }
+  } 
 
   // testRender() {
   //   const calendar = icon(faCalendarDays, { classes: ["fa-calender", "icon"] });
@@ -260,8 +268,8 @@ export default class UserDetailsClassic extends HTMLElement {
   // }
 
   getCC(obj) {
-      return country_codes[obj] ? `+${country_codes[obj]}` : "";
-  }; 
+    return country_codes[obj] ? `+${country_codes[obj]}` : "";
+  }
 
   async publishCustomEvent(data) {
     try {

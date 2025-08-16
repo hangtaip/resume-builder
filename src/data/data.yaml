@@ -1,69 +1,68 @@
 ---
 title: details
 owner:
-  name: 
-  title: 
-  email: 
-  github: 
-  yob: 
-  tel: 
-  country_code: 
-  location: 
-  seek:  
+  name: Sarah Jenkins
+  title: Attorney at Law
+  email: sarah.jenkins@email.com
+  github:
+  yob: 1988
+  tel: +1 (555) 123-4567
+  country_code: US
+  location: New York, NY
+  seek: Senior Associate Position
   motto: |-
-    
-  edu: 
+    Advocating for justice, one case at a time.
+  edu:
     1:
-      field: i flied 
-      alma: i almo
+      field: Juris Doctor
+      alma: Harvard Law School
     2:
-      field: test
-      alma:  iaei
+      field: Bachelor of Arts in Political Science
+      alma: Stanford University
   skills:
     1:
-      name: HTML5 
-      color: E34F26
+      name: Legal Research
+      color: 0047AB
     2:
-      name: CSS 
-      color: 663399
+      name: Litigation
+      color: 800000
     3:
-      name: Javascript 
-      color: F7DF1E
+      name: Contract Negotiation
+      color: 2E8B57
     4:
-      name: CSharp 
-      color: A179DC
-      icon: '/assets/imgs/icons/csharp.svg' 
+      name: Public Speaking
+      color: FFDB58
     5:
-      name: Python 
-      color: 3776AB
+      name: Legal Writing
+      color: 8A2BE2
   exp:
     1:
-      org: comp1 
-      pos: Software Engineer
-      tl_from: 2017-04
-      tl_to: 2022-12
+      org: Sterling & Partners LLP
+      pos: Associate Attorney
+      tl_from: 2015-09
+      tl_to: 2021-06
       desc:
-        - learned basic of programming
-        - introduced to .net ,c# and db driven development
-        - using materialize and jquery in frontend
+        - Managed a diverse caseload of civil litigation, from initial client consultation to trial.
+        - Drafted legal briefs, motions, and other court filings.
+        - Conducted extensive legal research and analysis.
+        - Successfully negotiated settlements for numerous clients.
     2:
-      org: comp2
-      pos: SoftWare Engineer
-      tl_from: 2023-09
-      tl_to: 2023-12
+      org: New York Public Defender's Office
+      pos: Assistant Public Defender
+      tl_from: 2021-07
+      tl_to: 2024-02
       desc:
-        - 1 month of basic python class
-        - soft skill class and team building meeting 
-        - 2 months of internship to grasp back into industry
-        - training
+        - Represented indigent clients in criminal proceedings.
+        - Argued motions and conducted preliminary hearings.
+        - Developed strong trial advocacy and courtroom skills.
+        - Collaborated with senior attorneys on complex felony cases.
     3:
-      org:      
-      pos: Software Engineer
-      tl_from: 2023-10
-      tl_to: 2024-10
+      org: Roberts & Associates PLLC
+      pos: Senior Associate
+      tl_from: 2024-03
+      tl_to: Present
       desc:
-        - learned visual basic
-        - using bootstrap, jquery and multiple library in frontend
-        - implemented db driven development
-        - introduced exceljs
-        - redesign UI for settings page
+        - Supervised and mentored junior attorneys.
+        - Led case strategy development for high-stakes corporate law cases.
+        - Managed all aspects of client relationships and communication.
+        - Represented firm at conferences and industry events.

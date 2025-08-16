@@ -60,7 +60,6 @@ export default class UserSkillsClassic extends HTMLElement {
     const dom = `
       <div class="container">
         <h3 class="header">
-          ${i.node[0].outerHTML}
           <span class="title">Skills</span>
         </h3>
       </div>
@@ -87,8 +86,11 @@ export default class UserSkillsClassic extends HTMLElement {
       obj.name.toLowerCase() == "javascript" ? "black" : "white";
     const labelName = (obj) =>
       obj.name.toLowerCase() == "csharp" ? "C%23" : obj.name;
-    const skillImg = async (obj) => {
+    const skillImg = async (obj, index) => {
       if (isNullUndefinedOrEmpty(obj.name)) { return }
+
+      // let defColor = "71797E";
+      // if (index % 2 != 0) defColor = "A9A9A9";
 
       if (Object.hasOwn(obj, "icon")) {
         const badgeUrl = await toDataURL(obj.icon).then((dataURL) => {
@@ -114,6 +116,7 @@ export default class UserSkillsClassic extends HTMLElement {
           `);
         });
       } else {
+        // console.log(obj.color);
         return new Promise((resolve) => {
           resolve(`
             <img alt="Static Badge" src="https://img.shields.io/badge/${labelName(
@@ -125,7 +128,7 @@ export default class UserSkillsClassic extends HTMLElement {
         });
       }
     };
-    const imgPromises = Object.values(skills).map((skill) => skillImg(skill));
+    const imgPromises = Object.values(skills).map((skill, index) => skillImg(skill, index));
     const skillDom = await Promise.all(imgPromises);
     this.skillsCount = imgPromises.length;
     // const skillDom = Object.values(skills).map((skill) => {

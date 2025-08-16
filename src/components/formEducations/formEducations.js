@@ -244,7 +244,7 @@ export default class FormEducations extends HTMLElement {
   setValueRequestDetail() {
     this.customEventData.await = false;
     this.customEventData.eventName = "valueRequest";
-    this.customEventData.details = { "form-education": this.shadowRoot.querySelectorAll("custom-input") }
+    this.customEventData.details = { [this.tagName.toLowerCase()]: this.shadowRoot.querySelectorAll("custom-input") }
   }
 
   async publishCustomEvent(data) {
