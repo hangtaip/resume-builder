@@ -1,0 +1,22 @@
+@use "../../css/base";
+
+.container {
+  @include base.container($bg-c: hsla(255, 100%, 100%, 1));
+  // border-radius: 50%;
+  // overflow: clip;
+  .pic {
+    background-image: url("https://placehold.co/600x400");
+    background-repeat: no-repeat;
+    background-color: white;
+    background-position: center;
+    background-size: contain;
+    height: calc(10ch + 4vh);
+    width: calc(10ch + 4vw);
+    max-width: 100%;
+    transition: all 0.1s ease-in;
+
+    @media print {
+      width: 8rem;
+    }
+  }
+}

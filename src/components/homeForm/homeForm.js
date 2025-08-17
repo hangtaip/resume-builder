@@ -113,6 +113,7 @@ export default class HomeForm extends HTMLElement {
     try {
       if (data.await) {
         await data.awaitDetail();
+
       }
 
       const eventDetail = {

@@ -5,6 +5,7 @@ dist/
 .envrc
 temp.html
 
+src/archives
 src/data/data.yaml.hangtaip
 src/data/data-example-with-pp.yaml
 *:Zone.identifier
