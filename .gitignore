@@ -6,7 +6,7 @@ dist/
 temp.html
 
 src/archives
-src/data/data.yaml.hangtaip
+src/data/data-hangtaip.yaml
 src/data/data-example-with-pp.yaml
 *:Zone.identifier
 
