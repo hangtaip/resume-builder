@@ -1,6 +1,8 @@
 node_modules
 build/
 dist/
+.direnv
+.envrc
 
 temp.html
 src/data/data.yaml.hangtaip
