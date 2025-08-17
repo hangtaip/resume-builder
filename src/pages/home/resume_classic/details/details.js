@@ -49,7 +49,6 @@ export default class UserDetailsClassic extends HTMLElement {
   }
 
   disconnectedCallback() {
-    console.log("dc");
     this.unsubscribe();
   }
 

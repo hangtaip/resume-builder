@@ -9,7 +9,7 @@ class Router {
     this.basePath = document.querySelector("base")?.getAttribute("href") || "/";
     this.listeners;
     this.context = {
-      pages: require.context('../pages', true, /\.\/([^\/]+)\/\1\.js$/),
+      pages: require.context("../pages", true, /\.\/([^\/]+)\/\1\.js$/),
     };
     this.container = document.body;
     //this.handlePopState = this.handlePopState.bind(this);

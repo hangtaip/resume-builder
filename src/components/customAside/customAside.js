@@ -74,7 +74,6 @@ export default class CustomAside extends HTMLElement {
   } 
 
   disconnectedCallback() {
-    this.abortEventListener();
     this.unsubscribe();
   }
 
@@ -642,144 +641,158 @@ export default class CustomAside extends HTMLElement {
   }
 
   async setTemplateList() {
-    const lists = [
-      {
-        name: "classic",
-        // img: "../../pages/home/resume_classic/sample.png",
-        // img: () => import(
-        //     /* webpackChunkNames: "template-example-[request]" */
-        //     /* webpackPrefetch: true */
-        //     "../../pages/home/resume_classic/sample.png"
-        //   )
-        path: "resume_classic/sample.png",
-      },
-      {
-        name: "default",
-        // img: "../../assets/imgs/templates/resume_default/sample.png",
-        // img: () => import(
-        //     /* webpackChunkNames: "template-example-[request]" */
-        //     /* webpackPrefetch: true */
-        //     "../../pages/home/resume_default/sample.png"
-        //   )
-        path: "resume_default/sample.png",
-      },
-      // {
-      //   name: "default",
-      //   img: "../../assets/imgs/templateImg_default.jpg",
-      // },
-      // {
-      //   name: "default",
-      //   img: "../../assets/imgs/templateImg_default.jpg",
-      // },
-      // {
-      //   name: "default",
-      //   img: "../../assets/imgs/templateImg_default.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-      // {
-      //   name: "classic",
-      //   img: "../../assets/imgs/templateImg_classic.jpg",
-      // },
-    ];
+
+    const context = require.context("../../pages/home", true, /\.\/([^\/]+)\/\1\.js$/);
+    const folderNames = context.keys().map(path => {
+      const match = path.match(/\.\/([^\/]+)\/\1\.js$/);
+      return match ? match[1] : null;
+    }).filter(name => name !== null);
+
+    const lists = folderNames.map(folder => {
+      return {
+        name: folder.substring("resume_".length),
+        pathToImg: `${folder}/sample.png`,
+      }
+    });
+
+    // const ___lists = [
+    //   {
+    //     name: "classic",
+    //     // img: "../../pages/home/resume_classic/sample.png",
+    //     // img: () => import(
+    //     //     /* webpackChunkNames: "template-example-[request]" */
+    //     //     /* webpackPrefetch: true */
+    //     //     "../../pages/home/resume_classic/sample.png"
+    //     //   )
+    //     path: "resume_classic/sample.png",
+    //   },
+    //   {
+    //     name: "default",
+    //     // img: "../../assets/imgs/templates/resume_default/sample.png",
+    //     // img: () => import(
+    //     //     /* webpackChunkNames: "template-example-[request]" */
+    //     //     /* webpackPrefetch: true */
+    //     //     "../../pages/home/resume_default/sample.png"
+    //     //   )
+    //     path: "resume_default/sample.png",
+    //   },
+    //   // {
+    //   //   name: "default",
+    //   //   img: "../../assets/imgs/templateImg_default.jpg",
+    //   // },
+    //   // {
+    //   //   name: "default",
+    //   //   img: "../../assets/imgs/templateImg_default.jpg",
+    //   // },
+    //   // {
+    //   //   name: "default",
+    //   //   img: "../../assets/imgs/templateImg_default.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    //   // {
+    //   //   name: "classic",
+    //   //   img: "../../assets/imgs/templateImg_classic.jpg",
+    //   // },
+    // ];
 
 
     // const img = await import(
@@ -797,7 +810,7 @@ export default class CustomAside extends HTMLElement {
     //     return imgNotAvailable;
     //   }
     // });
-    const imgPromises = lists.map(list => this.loadImageWithFallback(list.path));
+    const imgPromises = lists.map(list => this.loadImageWithFallback(list.pathToImg));
  
     try {
       const images = await Promise.all(imgPromises);
